@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loris Martin - Développeur Full-Stack</title>
+    <meta name="description" content="CV interactif de Loris Martin, développeur full-stack spécialisé en Java Spring Boot et Vue.js" />
+    <link href="https://fonts.googleapis.com/css?family=Barlow:400,500,700|Poppins:600,700,800" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body class="demo-3">
+    <main>
+        <!-- Fixed Header -->
+        <div class="content content--fixed">
+            <header class="main-header">
+                <a href="#hero" class="logo">LM</a>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#hero" data-slide="0">Accueil</a></li>
+                        <li><a href="#experience" data-slide="1">Expérience</a></li>
+                        <li><a href="#skills" data-slide="2">Compétences</a></li>
+                        <li><a href="#projects" data-slide="3">Projets</a></li>
+                        <li><a href="#education" data-slide="4">Formation</a></li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+
+        <!-- WebGL Canvas Background -->
+        <canvas class="scene scene--full" id="scene"></canvas>
+
+        <!-- Horizontal Scroll Container -->
+        <div class="horizontal-scroll-wrapper">
+            <div class="slides-container" id="slidesContainer">
+                
+                <!-- Slide 1: Hero -->
+                <section class="slide" id="hero">
+                    <div class="slide-content">
+                        <h1 class="content__title">Loris<br>Martin</h1>
+                        <p class="hero-subtitle">Développeur Full-Stack • Expert Java Spring & Vue.js</p>
+                        <p class="hero-description">
+                            Architecte logiciel passionné par les solutions réactives et les systèmes distribués. 
+                            Spécialiste en développement d'applications d'entreprise avec plus de 8 ans d'expérience.
+                        </p>
+                        <div class="hero-contact">
+                            <a href="/cdn-cgi/l/email-protection#2a464558435904474b585e43446a4f474b434604494547" class="contact-btn contact-btn--primary">
+                                <span>✉</span>
+                                <span>Me contacter</span>
+                            </a>
+                            <a href="#projects" class="contact-btn" data-slide="3">
+                                <span>💼</span>
+                                <span>Voir mes projets</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Slide 2: Experience -->
+                <section class="slide" id="experience">
+                    <div class="slide-content">
+                        <div class="section-header">
+                            <div class="section-number">01 — Parcours</div>
+                            <h2 class="section-title">Expérience</h2>
+                            <p class="section-description">
+                                Plus de 8 années d'expertise dans le développement de solutions logicielles d'entreprise.
+                            </p>
+                        </div>
+
+                        <div class="experience-grid">
+                            <article class="experience-card">
+                                <div class="experience-period">2020 — Présent</div>
+                                <h3 class="experience-title">Développeur Full-Stack Senior</h3>
+                                <div class="experience-company">Midi Mini Informatique</div>
+                                <p class="experience-description">
+                                    Architecte et développeur principal du système ERP MMI ONE pour la distribution de fruits 
+                                    et légumes. Conception d'architectures backend réactives avec Spring Boot WebFlux/R2DBC.
+                                </p>
+                            </article>
+
+                            <article class="experience-card">
+                                <div class="experience-period">2018 — 2020</div>
+                                <h3 class="experience-title">Développeur Java & Android</h3>
+                                <div class="experience-company">Projets Freelance</div>
+                                <p class="experience-description">
+                                    Développement d'applications mobiles natives Android et cross-platform avec React Native/Expo. 
+                                    Architecture MVC, intégration SQLite, et création de services backend RESTful.
+                                </p>
+                            </article>
+
+                            <article class="experience-card">
+                                <div class="experience-period">2016 — 2018</div>
+                                <h3 class="experience-title">Développeur Web Junior</h3>
+                                <div class="experience-company">Agence Digitale</div>
+                                <p class="experience-description">
+                                    Développement de sites web et applications métier avec frameworks JavaScript modernes. 
+                                    Intégration CMS, optimisation frontend, et mise en place de pipelines CI/CD.
+                                </p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Slide 3: Skills -->
+                <section class="slide" id="skills">
+                    <div class="slide-content">
+                        <div class="section-header">
+                            <div class="section-number">02 — Expertise</div>
+                            <h2 class="section-title">Compétences</h2>
+                            <p class="section-description">
+                                Stack technologique étendu avec spécialisation en architecture réactive.
+                            </p>
+                        </div>
+
+                        <div class="skills-grid">
+                            <div class="skill-category">
+                                <h3 class="skill-category-title">Backend</h3>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">Java</span>
+                                    <span class="skill-tag">Spring Boot</span>
+                                    <span class="skill-tag">WebFlux</span>
+                                    <span class="skill-tag">R2DBC</span>
+                                    <span class="skill-tag">PostgreSQL</span>
+                                    <span class="skill-tag">REST API</span>
+                                </div>
+                            </div>
+
+                            <div class="skill-category">
+                                <h3 class="skill-category-title">Frontend</h3>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">Vue.js</span>
+                                    <span class="skill-tag">Nuxt</span>
+                                    <span class="skill-tag">TypeScript</span>
+                                    <span class="skill-tag">JavaScript</span>
+                                    <span class="skill-tag">React Native</span>
+                                    <span class="skill-tag">HTML/CSS</span>
+                                </div>
+                            </div>
+
+                            <div class="skill-category">
+                                <h3 class="skill-category-title">DevOps</h3>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">Docker</span>
+                                    <span class="skill-tag">Git</span>
+                                    <span class="skill-tag">CI/CD</span>
+                                    <span class="skill-tag">Linux</span>
+                                </div>
+                            </div>
+
+                            <div class="skill-category">
+                                <h3 class="skill-category-title">Architecture</h3>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">Reactive</span>
+                                    <span class="skill-tag">Design Patterns</span>
+                                    <span class="skill-tag">Multi-tenant</span>
+                                    <span class="skill-tag">MVC/MVVM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Slide 4: Projects -->
+                <section class="slide" id="projects">
+                    <div class="slide-content">
+                        <div class="section-header">
+                            <div class="section-number">03 — Réalisations</div>
+                            <h2 class="section-title">Projets</h2>
+                        </div>
+
+                        <div class="projects-list">
+                            <article class="project-card">
+                                <div class="project-header">
+                                    <h3 class="project-name">Système Factur-X</h3>
+                                    <div class="project-tags">
+                                        <span class="project-tag">Java Spring</span>
+                                        <span class="project-tag">WebFlux</span>
+                                        <span class="project-tag">XML</span>
+                                    </div>
+                                </div>
+                                <p class="project-description">
+                                    Développement complet d'un système de validation pour factures électroniques selon les normes 
+                                    françaises BR-FR. Architecture réactive avec Project Reactor.
+                                </p>
+                            </article>
+
+                            <article class="project-card">
+                                <div class="project-header">
+                                    <h3 class="project-name">Module Gesfel - ERP MMI ONE</h3>
+                                    <div class="project-tags">
+                                        <span class="project-tag">Spring Boot</span>
+                                        <span class="project-tag">PostgreSQL</span>
+                                        <span class="project-tag">Vue.js</span>
+                                    </div>
+                                </div>
+                                <p class="project-description">
+                                    Système complet de gestion pour la distribution de fruits et légumes. Architecture scalable 
+                                    supportant des milliers de transactions quotidiennes avec interfaces réactives.
+                                </p>
+                            </article>
+
+                            <article class="project-card">
+                                <div class="project-header">
+                                    <h3 class="project-name">Système de Gestion des Taxes</h3>
+                                    <div class="project-tags">
+                                        <span class="project-tag">R2DBC</span>
+                                        <span class="project-tag">Spring</span>
+                                        <span class="project-tag">Vue.js</span>
+                                    </div>
+                                </div>
+                                <p class="project-description">
+                                    Solution full-stack pour l'attribution et la gestion des taxes. Conception de schéma 
+                                    de base de données optimisé, services Java avec validations métier complexes.
+                                </p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Slide 5: Education -->
+                <section class="slide" id="education">
+                    <div class="slide-content">
+                        <div class="section-header">
+                            <div class="section-number">04 — Formation</div>
+                            <h2 class="section-title">Éducation</h2>
+                        </div>
+
+                        <div class="education-grid">
+                            <div class="education-card">
+                                <h3 class="education-degree">Master Informatique</h3>
+                                <div class="education-school">Université Paul Sabatier</div>
+                                <div class="education-year">Toulouse • 2014 — 2016</div>
+                            </div>
+
+                            <div class="education-card">
+                                <h3 class="education-degree">Licence Informatique</h3>
+                                <div class="education-school">Université Paul Sabatier</div>
+                                <div class="education-year">Toulouse • 2011 — 2014</div>
+                            </div>
+
+                            <div class="education-card">
+                                <h3 class="education-degree">Formation Continue</h3>
+                                <div class="education-school">Architecture Réactive</div>
+                                <div class="education-year">Spring WebFlux & Project Reactor</div>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <footer>
+                            <p class="footer-text">© 2026 Loris Martin — Tous droits réservés</p>
+                            <p class="footer-text">Basé à Labège, France</p>
+                            <div class="footer-links">
+                                <a href="/cdn-cgi/l/email-protection#4c20233e253f62212d3e3825220c29212d2520622f2321" class="footer-link">Email</a>
+                                <a href="#" class="footer-link">LinkedIn</a>
+                                <a href="#" class="footer-link">GitHub</a>
+                            </div>
+                        </footer>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <span class="current-slide">01</span>
+            <span class="separator">/</span>
+            <span class="total-slides">05</span>
+        </div>
+
+        <!-- Scroll Arrow (only visible on first slide) -->
+        <div class="scroll-arrow" id="scrollArrow">
+            <div class="arrow-container">
+                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 30H40M40 30L32 22M40 30L32 38" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="arrow-text">Scroll</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="Perlin.js"></script>
+    <script src="Scene.js"></script>
+    <script src="Navigation.js"></script>
+</body>
+</html>

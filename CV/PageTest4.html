@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="fr" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loris Martin - Développeur Full-Stack</title>
+    <meta name="description" content="CV interactif de Loris Martin, développeur full-stack spécialisé en Java Spring Boot et Vue.js" />
+    <link href="https://fonts.googleapis.com/css?family=Barlow:400,500,700|Poppins:600,700,800" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-text: #191919;
+            --color-bg: #F1F1F1;
+            --color-primary: #58C482;
+            --color-primary-dark: #3a9960;
+            --color-primary-light: #7fd69f;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Scene Canvas */
+        .scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .scene--full {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Main Container */
+        main {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .content--fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .content--fixed > * {
+            pointer-events: auto;
+        }
+
+        /* Header */
+        .main-header {
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary);
+        }
+
+        /* Content Inner */
+        .content__inner {
+            position: relative;
+            z-index: 2;
+            padding: 0 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 0 4rem;
+        }
+
+        .content__title {
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: -0.025em;
+            font-size: clamp(4rem, 12vw, 10rem);
+            color: var(--color-text);
+            line-height: 1;
+            margin: 0;
+            position: relative;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 400;
+            color: var(--color-primary);
+            margin: 1.5rem 0 2rem;
+            max-width: 800px;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: rgba(25, 25, 25, 0.7);
+            max-width: 700px;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+        }
+
+        .hero-contact {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1.2rem 2.5rem;
+            background: transparent;
+            border: 2px solid var(--color-primary);
+            color: var(--color-text);
+            font-family: 'Barlow', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .contact-btn:hover {
+            background: var(--color-primary);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .contact-btn--primary {
+            background: var(--color-primary);
+            color: #fff;
+        }
+
+        .contact-btn--primary:hover {
+            background: var(--color-primary-dark);
+            border-color: var(--color-primary-dark);
+        }
+
+        /* Sections */
+        .section {
+            position: relative;
+            padding: 8rem 0;
+            z-index: 2;
+        }
+
+        .section-header {
+            margin-bottom: 5rem;
+        }
+
+        .section-number {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            color: var(--color-text);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .section-description {
+            font-size: 1.2rem;
+            color: rgba(25, 25, 25, 0.7);
+            max-width: 700px;
+            line-height: 1.8;
+        }
+
+        /* Experience Grid */
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .experience-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(88, 196, 130, 0.3);
+            padding: 3rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--color-primary);
+            transition: height 0.4s ease;
+        }
+
+        .experience-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .experience-card:hover::before {
+            height: 100%;
+        }
+
+        .experience-period {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .experience-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-company {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-primary-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .experience-description {
+            color: rgba(25, 25, 25, 0.8);
+            line-height: 1.8;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .skill-category {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(88, 196, 130, 0.3);
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .skill-category:hover {
+            border-color: var(--color-primary);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .skill-category-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .skill-tag {
+            padding: 0.6rem 1.2rem;
+            background: rgba(88, 196, 130, 0.1);
+            border: 1px solid var(--color-primary);
+            color: var(--color-text);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: var(--color-primary);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        /* Projects Section */
+        .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(88, 196, 130, 0.3);
+            border-left: 4px solid var(--color-primary);
+            padding: 3.5rem;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .project-card:hover {
+            border-color: var(--color-primary);
+            border-left-width: 8px;
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+
+        .project-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .project-tag {
+            padding: 0.5rem 1.2rem;
+            background: rgba(88, 196, 130, 0.15);
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary-dark);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .project-description {
+            color: rgba(25, 25, 25, 0.8);
+            line-height: 1.9;
+            font-size: 1.05rem;
+        }
+
+        /* Education Section */
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .education-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(88, 196, 130, 0.3);
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .education-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .education-degree {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: 0.8rem;
+        }
+
+        .education-school {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .education-year {
+            font-size: 0.95rem;
+            color: rgba(25, 25, 25, 0.6);
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 2;
+            padding: 6rem 3rem 4rem;
+            text-align: center;
+            border-top: 2px solid rgba(88, 196, 130, 0.3);
+        }
+
+        .footer-text {
+            font-size: 1rem;
+            color: rgba(25, 25, 25, 0.6);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer-link {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--color-primary-dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content__inner {
+                padding: 0 2rem;
+            }
+
+            .main-header {
+                padding: 1.5rem 2rem;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-section {
+                padding: 6rem 0 3rem;
+            }
+
+            .experience-grid,
+            .skills-grid,
+            .education-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 5rem 0;
+            }
+
+            .project-header {
+                flex-direction: column;
+            }
+
+            footer {
+                padding: 4rem 2rem 3rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="demo-3">
+    <main>
+        <!-- Fixed Header -->
+        <div class="content content--fixed">
+            <header class="main-header">
+                <a href="#" class="logo">LM</a>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#experience">Expérience</a></li>
+                        <li><a href="#skills">Compétences</a></li>
+                        <li><a href="#projects">Projets</a></li>
+                        <li><a href="#education">Formation</a></li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+
+        <!-- WebGL Canvas Background -->
+        <canvas class="scene scene--full" id="scene"></canvas>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="content__inner">
+                <!-- Hero Section -->
+                <section class="hero-section">
+                    <h1 class="content__title">Loris<br>Martin</h1>
+                    <p class="hero-subtitle">Développeur Full-Stack • Expert Java Spring & Vue.js</p>
+                    <p class="hero-description">
+                        Architecte logiciel passionné par les solutions réactives et les systèmes distribués. 
+                        Spécialiste en développement d'applications d'entreprise avec plus de 8 ans d'expérience.
+                    </p>
+                    <div class="hero-contact">
+                        <a href="mailto:loris.martin@email.com" class="contact-btn contact-btn--primary">
+                            <span>✉</span>
+                            <span>Me contacter</span>
+                        </a>
+                        <a href="#projects" class="contact-btn">
+                            <span>💼</span>
+                            <span>Voir mes projets</span>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Experience Section -->
+                <section id="experience" class="section">
+                    <div class="section-header">
+                        <div class="section-number">01 — Parcours</div>
+                        <h2 class="section-title">Expérience</h2>
+                        <p class="section-description">
+                            Plus de 8 années d'expertise dans le développement de solutions logicielles d'entreprise.
+                        </p>
+                    </div>
+
+                    <div class="experience-grid">
+                        <article class="experience-card">
+                            <div class="experience-period">2020 — Présent</div>
+                            <h3 class="experience-title">Développeur Full-Stack Senior</h3>
+                            <div class="experience-company">Midi Mini Informatique</div>
+                            <p class="experience-description">
+                                Architecte et développeur principal du système ERP MMI ONE pour la distribution de fruits 
+                                et légumes. Conception d'architectures backend réactives avec Spring Boot WebFlux/R2DBC.
+                            </p>
+                        </article>
+
+                        <article class="experience-card">
+                            <div class="experience-period">2018 — 2020</div>
+                            <h3 class="experience-title">Développeur Java & Android</h3>
+                            <div class="experience-company">Projets Freelance</div>
+                            <p class="experience-description">
+                                Développement d'applications mobiles natives Android et cross-platform avec React Native/Expo. 
+                                Architecture MVC, intégration SQLite, et création de services backend RESTful.
+                            </p>
+                        </article>
+
+                        <article class="experience-card">
+                            <div class="experience-period">2016 — 2018</div>
+                            <h3 class="experience-title">Développeur Web Junior</h3>
+                            <div class="experience-company">Agence Digitale</div>
+                            <p class="experience-description">
+                                Développement de sites web et applications métier avec frameworks JavaScript modernes. 
+                                Intégration CMS, optimisation frontend, et mise en place de pipelines CI/CD.
+                            </p>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- Skills Section -->
+                <section id="skills" class="section">
+                    <div class="section-header">
+                        <div class="section-number">02 — Expertise</div>
+                        <h2 class="section-title">Compétences</h2>
+                        <p class="section-description">
+                            Stack technologique étendu avec spécialisation en architecture réactive.
+                        </p>
+                    </div>
+
+                    <div class="skills-grid">
+                        <div class="skill-category">
+                            <h3 class="skill-category-title">Backend</h3>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Java</span>
+                                <span class="skill-tag">Spring Boot</span>
+                                <span class="skill-tag">WebFlux</span>
+                                <span class="skill-tag">R2DBC</span>
+                                <span class="skill-tag">PostgreSQL</span>
+                                <span class="skill-tag">REST API</span>
+                            </div>
+                        </div>
+
+                        <div class="skill-category">
+                            <h3 class="skill-category-title">Frontend</h3>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Vue.js</span>
+                                <span class="skill-tag">Nuxt</span>
+                                <span class="skill-tag">TypeScript</span>
+                                <span class="skill-tag">JavaScript</span>
+                                <span class="skill-tag">React Native</span>
+                                <span class="skill-tag">HTML/CSS</span>
+                            </div>
+                        </div>
+
+                        <div class="skill-category">
+                            <h3 class="skill-category-title">DevOps</h3>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Docker</span>
+                                <span class="skill-tag">Git</span>
+                                <span class="skill-tag">CI/CD</span>
+                                <span class="skill-tag">Linux</span>
+                            </div>
+                        </div>
+
+                        <div class="skill-category">
+                            <h3 class="skill-category-title">Architecture</h3>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Reactive</span>
+                                <span class="skill-tag">Design Patterns</span>
+                                <span class="skill-tag">Multi-tenant</span>
+                                <span class="skill-tag">MVC/MVVM</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Projects Section -->
+                <section id="projects" class="section">
+                    <div class="section-header">
+                        <div class="section-number">03 — Réalisations</div>
+                        <h2 class="section-title">Projets</h2>
+                    </div>
+
+                    <div class="projects-list">
+                        <article class="project-card">
+                            <div class="project-header">
+                                <h3 class="project-name">Système Factur-X</h3>
+                                <div class="project-tags">
+                                    <span class="project-tag">Java Spring</span>
+                                    <span class="project-tag">WebFlux</span>
+                                    <span class="project-tag">XML</span>
+                                </div>
+                            </div>
+                            <p class="project-description">
+                                Développement complet d'un système de validation pour factures électroniques selon les normes 
+                                françaises BR-FR. Architecture réactive avec Project Reactor.
+                            </p>
+                        </article>
+
+                        <article class="project-card">
+                            <div class="project-header">
+                                <h3 class="project-name">Module Gesfel</h3>
+                                <div class="project-tags">
+                                    <span class="project-tag">Spring Boot</span>
+                                    <span class="project-tag">PostgreSQL</span>
+                                    <span class="project-tag">Vue.js</span>
+                                </div>
+                            </div>
+                            <p class="project-description">
+                                Système complet de gestion pour la distribution de fruits et légumes. Architecture scalable 
+                                supportant des milliers de transactions quotidiennes.
+                            </p>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- Education Section -->
+                <section id="education" class="section">
+                    <div class="section-header">
+                        <div class="section-number">04 — Formation</div>
+                        <h2 class="section-title">Éducation</h2>
+                    </div>
+
+                    <div class="education-grid">
+                        <div class="education-card">
+                            <h3 class="education-degree">Master Informatique</h3>
+                            <div class="education-school">Université Paul Sabatier</div>
+                            <div class="education-year">Toulouse • 2014 — 2016</div>
+                        </div>
+
+                        <div class="education-card">
+                            <h3 class="education-degree">Licence Informatique</h3>
+                            <div class="education-school">Université Paul Sabatier</div>
+                            <div class="education-year">Toulouse • 2011 — 2014</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Footer -->
+                <footer>
+                    <p class="footer-text">© 2026 Loris Martin — Tous droits réservés</p>
+                    <p class="footer-text">Basé à Labège, France</p>
+                    <div class="footer-links">
+                        <a href="mailto:loris.martin@email.com" class="footer-link">Email</a>
+                        <a href="#" class="footer-link">LinkedIn</a>
+                        <a href="#" class="footer-link">GitHub</a>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    <!-- Three.js r84 (older version compatible with geometry.vertices) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    
+    <!-- Perlin Noise -->
+    <script>
+        (function(global){var module=global.noise={};function Grad(x,y,z){this.x=x;this.y=y;this.z=z}Grad.prototype.dot2=function(x,y){return this.x*x+this.y*y};Grad.prototype.dot3=function(x,y,z){return this.x*x+this.y*y+this.z*z};var grad3=[new Grad(1,1,0),new Grad(-1,1,0),new Grad(1,-1,0),new Grad(-1,-1,0),new Grad(1,0,1),new Grad(-1,0,1),new Grad(1,0,-1),new Grad(-1,0,-1),new Grad(0,1,1),new Grad(0,-1,1),new Grad(0,1,-1),new Grad(0,-1,-1)];var p=[151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241,81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180];var perm=new Array(512);var gradP=new Array(512);module.seed=function(seed){if(seed>0&&seed<1){seed*=65536}seed=Math.floor(seed);if(seed<256){seed|=seed<<8}for(var i=0;i<256;i++){var v;if(i&1){v=p[i]^(seed&255)}else{v=p[i]^((seed>>8)&255)}perm[i]=perm[i+256]=v;gradP[i]=gradP[i+256]=grad3[v%12]}};module.seed(0);var F3=1/3;var G3=1/6;module.simplex3=function(xin,yin,zin){var n0,n1,n2,n3;var s=(xin+yin+zin)*F3;var i=Math.floor(xin+s);var j=Math.floor(yin+s);var k=Math.floor(zin+s);var t=(i+j+k)*G3;var x0=xin-i+t;var y0=yin-j+t;var z0=zin-k+t;var i1,j1,k1;var i2,j2,k2;if(x0>=y0){if(y0>=z0){i1=1;j1=0;k1=0;i2=1;j2=1;k2=0}else if(x0>=z0){i1=1;j1=0;k1=0;i2=1;j2=0;k2=1}else{i1=0;j1=0;k1=1;i2=1;j2=0;k2=1}}else{if(y0<z0){i1=0;j1=0;k1=1;i2=0;j2=1;k2=1}else if(x0<z0){i1=0;j1=1;k1=0;i2=0;j2=1;k2=1}else{i1=0;j1=1;k1=0;i2=1;j2=1;k2=0}}var x1=x0-i1+G3;var y1=y0-j1+G3;var z1=z0-k1+G3;var x2=x0-i2+2*G3;var y2=y0-j2+2*G3;var z2=z0-k2+2*G3;var x3=x0-1+3*G3;var y3=y0-1+3*G3;var z3=z0-1+3*G3;i&=255;j&=255;k&=255;var gi0=gradP[i+perm[j+perm[k]]];var gi1=gradP[i+i1+perm[j+j1+perm[k+k1]]];var gi2=gradP[i+i2+perm[j+j2+perm[k+k2]]];var gi3=gradP[i+1+perm[j+1+perm[k+1]]];var t0=0.6-x0*x0-y0*y0-z0*z0;if(t0<0){n0=0}else{t0*=t0;n0=t0*t0*gi0.dot3(x0,y0,z0)}var t1=0.6-x1*x1-y1*y1-z1*z1;if(t1<0){n1=0}else{t1*=t1;n1=t1*t1*gi1.dot3(x1,y1,z1)}var t2=0.6-x2*x2-y2*y2-z2*z2;if(t2<0){n2=0}else{t2*=t2;n2=t2*t2*gi2.dot3(x2,y2,z2)}var t3=0.6-x3*x3-y3*y3-z3*z3;if(t3<0){n3=0}else{t3*=t3;n3=t3*t3*gi3.dot3(x3,y3,z3)}return 32*(n0+n1+n2+n3)}})(this);
+    </script>
+    
+    <!-- Demo3 Implementation -->
+    <script>
+        var canvas = document.querySelector('#scene');
+        var width = canvas.offsetWidth,
+            height = canvas.offsetHeight;
+        
+        var renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: true
+        });
+        renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+        renderer.setSize(width, height);
+        renderer.setClearColor(0xF1F1F1, 1);
+        
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(100, width / height, 0.1, 10000);
+        camera.position.set(120, 0, 300);
+        
+        // Lights with green color scheme
+        var light = new THREE.HemisphereLight(0xffffff, 0x3a9960, 0.6);
+        scene.add(light);
+        
+        var light1 = new THREE.DirectionalLight(0x58C482, 0.5);
+        light1.position.set(200, 300, 400); 
+        scene.add(light1);
+        
+        var light2 = light1.clone();
+        light2.position.set(-200, 300, 400); 
+        scene.add(light2);
+        
+        // Create organic matter sphere
+        var geometry = new THREE.IcosahedronGeometry(120, 4);
+        
+        // Store original vertices
+        for(var i = 0; i < geometry.vertices.length; i++) {
+            var vector = geometry.vertices[i];
+            vector._o = vector.clone();  
+        }
+        
+        var material = new THREE.MeshPhongMaterial({
+            color: 0x58C482,
+            emissive: 0x3a9960, 
+            emissiveIntensity: 0.4,
+            shininess: 0
+        });
+        
+        var shape = new THREE.Mesh(geometry, material);
+        scene.add(shape);
+        
+        // Update vertices with Perlin noise
+        function updateVertices(a) {
+            for(var i = 0; i < geometry.vertices.length; i++) {
+                var vector = geometry.vertices[i];
+                vector.copy(vector._o);
+                
+                var perlin = noise.simplex3(
+                    (vector.x * 0.006) + (a * 0.0002),
+                    (vector.y * 0.006) + (a * 0.0003),
+                    (vector.z * 0.006)
+                );
+                
+                var ratio = ((perlin * 0.4 * (mouse.y + 0.1)) + 0.8);
+                vector.multiplyScalar(ratio);
+            }
+            geometry.verticesNeedUpdate = true;
+        }
+        
+        // Render loop
+        function render(a) {
+            requestAnimationFrame(render);
+            updateVertices(a);
+            renderer.render(scene, camera);
+        }
+        
+        // Resize handler
+        function onResize() {
+            canvas.style.width = '';
+            canvas.style.height = '';
+            width = canvas.offsetWidth;
+            height = canvas.offsetHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();  
+            renderer.setSize(width, height);
+        }
+        
+        // Mouse interaction
+        var mouse = new THREE.Vector2(0.8, 0.5);
+        
+        function onMouseMove(e) {
+            TweenMax.to(mouse, 0.8, {
+                y: (e.clientY / height),
+                x: (e.clientX / width),
+                ease: Power1.easeOut
+            });
+        }
+        
+        // Start animation
+        requestAnimationFrame(render);
+        window.addEventListener("mousemove", onMouseMove);
+        
+        var resizeTm;
+        window.addEventListener("resize", function(){
+            resizeTm = clearTimeout(resizeTm);
+            resizeTm = setTimeout(onResize, 200);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
