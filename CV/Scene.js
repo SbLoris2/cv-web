@@ -13,10 +13,29 @@ var renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
 renderer.setSize(width, height);
 renderer.setClearColor(0xF1F1F1, 1);
+// Get initial theme
+var currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+var bgColor = currentTheme === 'dark' ? 0x0F0F0F : 0xF1F1F1;
+renderer.setClearColor(bgColor, 1);
+
+// Expose renderer globally for theme switching
+window.sceneRenderer = renderer;
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(100, width / height, 0.1, 10000);
 camera.position.set(120, 0, 300);
+// Lights with theme-aware colors
+function updateLights(theme) {
+    var hemisphereColor = theme === 'dark' ? 0xffffff : 0xffffff;
+    var hemisphereBgColor = theme === 'dark' ? 0x1a5c3a : 0x3a9960;
+    
+    scene.children.forEach(child => {
+        if (child instanceof THREE.HemisphereLight) {
+            child.color.setHex(hemisphereColor);
+            child.groundColor.setHex(hemisphereBgColor);
+        }
+    });
+}
 
 // Lights with green color scheme
 var light = new THREE.HemisphereLight(0xffffff, 0x3a9960, 0.6);

@@ -11,10 +11,16 @@
     const totalSlidesIndicator = document.querySelector('.total-slides');
     const scrollArrow = document.getElementById('scrollArrow');
     
+    // Mobile menu elements
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    
     let currentSlide = 0;
     let isScrolling = false;
     let touchStartX = 0;
     let touchEndX = 0;
+    let isMobileMenuOpen = false;
 
     // Initialize
     function init() {
@@ -44,6 +50,51 @@
                 goToSlide(slideIndex);
             });
         });
+
+        // Mobile menu toggle
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+        }
+
+        // Mobile menu overlay
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        }
+
+        // Close mobile menu on window resize if open
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && isMobileMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+    }
+
+    // Toggle mobile menu
+    function toggleMobileMenu() {
+        isMobileMenuOpen = !isMobileMenuOpen;
+        
+        if (isMobileMenuOpen) {
+            openMobileMenu();
+        } else {
+            closeMobileMenu();
+        }
+    }
+
+    // Open mobile menu
+    function openMobileMenu() {
+        mobileNav.classList.add('active');
+        mobileMenuToggle.classList.add('active');
+        mobileMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Close mobile menu
+    function closeMobileMenu() {
+        mobileNav.classList.remove('active');
+        mobileMenuToggle.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        isMobileMenuOpen = false;
     }
 
     // Navigate to specific slide
@@ -62,6 +113,11 @@
         updateActiveNav();
         updateScrollArrow();
         updateSceneScroll();
+        
+        // Close mobile menu if open
+        if (isMobileMenuOpen) {
+            closeMobileMenu();
+        }
         
         setTimeout(() => {
             isScrolling = false;
@@ -108,6 +164,17 @@
     function handleKeydown(e) {
         if (isScrolling) return;
         
+        // Don't navigate if mobile menu is open
+        if (isMobileMenuOpen && (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+            return;
+        }
+
+        // Close mobile menu on Escape
+        if (e.key === 'Escape' && isMobileMenuOpen) {
+            closeMobileMenu();
+            return;
+        }
+        
         switch(e.key) {
             case 'ArrowRight':
             case 'ArrowDown':
@@ -132,10 +199,18 @@
 
     // Handle touch events
     function handleTouchStart(e) {
+        // Don't handle touch if it's on the mobile menu
+        if (e.target.closest('nav') || e.target.closest('.mobile-menu-toggle')) {
+            return;
+        }
         touchStartX = e.changedTouches[0].screenX;
     }
 
     function handleTouchEnd(e) {
+        // Don't handle touch if it's on the mobile menu
+        if (e.target.closest('nav') || e.target.closest('.mobile-menu-toggle')) {
+            return;
+        }
         touchEndX = e.changedTouches[0].screenX;
         handleSwipe();
     }

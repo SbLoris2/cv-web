@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr" class="no-js">
+<html lang="fr" class="no-js" data-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Loris Martin - Développeur Full-Stack</title>
-    <meta name="description" content="CV interactif de Loris Martin, développeur full-stack spécialisé en Java Spring Boot et Vue.js" />
+    <title>Loris Lebreton - Développeur Full-Stack</title>
+    <meta name="description" content="CV interactif de Loris Lebreton, développeur full-stack spécialisé en Java Spring Boot et Vue.js" />
     <link href="https://fonts.googleapis.com/css?family=Barlow:400,500,700|Poppins:600,700,800" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
@@ -12,18 +12,27 @@
     <main>
         <!-- Fixed Header -->
         <div class="content content--fixed">
-            <header class="main-header">
-                <a href="#hero" class="logo">LM</a>
-                <nav>
-                    <ul class="nav-links">
-                        <li><a href="#hero" data-slide="0">Accueil</a></li>
-                        <li><a href="#experience" data-slide="1">Expérience</a></li>
-                        <li><a href="#skills" data-slide="2">Compétences</a></li>
-                        <li><a href="#projects" data-slide="3">Projets</a></li>
-                        <li><a href="#education" data-slide="4">Formation</a></li>
-                    </ul>
-                </nav>
-            </header>
+           <header class="main-header">
+    <a href="#hero" class="logo">LL</a>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#hero" data-slide="0">Accueil</a></li>
+            <li><a href="#experience" data-slide="1">Expérience</a></li>
+            <li><a href="#skills" data-slide="2">Compétences</a></li>
+            <li><a href="#projects" data-slide="3">Projets</a></li>
+            <li><a href="#education" data-slide="4">Formation</a></li>
+        </ul>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 5V3M12 21V19M16.95 7.05L18.364 5.636M5.636 18.364L7.05 16.95M19 12H21M3 12H5M16.95 16.95L18.364 18.364M5.636 5.636L7.05 7.05" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+</header>
         </div>
 
         <!-- WebGL Canvas Background -->
@@ -36,14 +45,14 @@
                 <!-- Slide 1: Hero -->
                 <section class="slide" id="hero">
                     <div class="slide-content">
-                        <h1 class="content__title">Loris<br>Martin</h1>
+                        <h1 class="content__title">Loris<br>Lebreton</h1>
                         <p class="hero-subtitle">Développeur Full-Stack • Expert Java Spring & Vue.js</p>
                         <p class="hero-description">
                             Architecte logiciel passionné par les solutions réactives et les systèmes distribués. 
                             Spécialiste en développement d'applications d'entreprise avec plus de 8 ans d'expérience.
                         </p>
                         <div class="hero-contact">
-                            <a href="/cdn-cgi/l/email-protection#2a464558435904474b585e43446a4f474b434604494547" class="contact-btn contact-btn--primary">
+                            <a href="mailto:contact@example.com" class="contact-btn contact-btn--primary">
                                 <span>✉</span>
                                 <span>Me contacter</span>
                             </a>
@@ -246,10 +255,10 @@
 
                         <!-- Footer -->
                         <footer>
-                            <p class="footer-text">© 2026 Loris Martin — Tous droits réservés</p>
+                            <p class="footer-text">© 2026 Loris Lebreton — Tous droits réservés</p>
                             <p class="footer-text">Basé à Labège, France</p>
                             <div class="footer-links">
-                                <a href="/cdn-cgi/l/email-protection#4c20233e253f62212d3e3825220c29212d2520622f2321" class="footer-link">Email</a>
+                                <a href="mailto:contact@example.com" class="footer-link">Email</a>
                                 <a href="#" class="footer-link">LinkedIn</a>
                                 <a href="#" class="footer-link">GitHub</a>
                             </div>
@@ -284,5 +293,6 @@
     <script src="Perlin.js"></script>
     <script src="Scene.js"></script>
     <script src="Navigation.js"></script>
+    <script src="ThemeToggle.js"></script>
 </body>
 </html>
