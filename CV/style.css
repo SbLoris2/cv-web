@@ -279,6 +279,42 @@ main {
     opacity: 1 !important;
 }
 
+/* Return Home Button */
+.return-home-btn {
+    position: fixed !important;
+    bottom: 3rem !important;
+    left: 3rem !important;
+    z-index: 1001 !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary);
+    color: var(--color-background);
+    border: none;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(88, 196, 130, 0.3);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.return-home-btn:hover {
+    transform: translateX(-5px) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(88, 196, 130, 0.4);
+}
+
+.return-home-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.5;
+}
+
 /* Scroll Arrow */
 .scroll-arrow {
     position: fixed !important;
@@ -1260,5 +1296,190 @@ footer {
     body {
         background: white;
         color: black;
+    }
+}
+
+/* ====================
+   LANDING PAGE STYLES
+   ==================== */
+
+.landing-page {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.warp-hero {
+    position: relative;
+    z-index: 5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+}
+
+.content__inner {
+    text-align: center;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content__title {
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: -0.025em;
+    font-size: clamp(4rem, 12vw, 10rem);
+    color: var(--color-text);
+    line-height: 1;
+    margin: 0 0 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.content__subtitle {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 400;
+    color: var(--color-primary);
+    margin: 1rem 0 2rem;
+    letter-spacing: 0.05em;
+}
+
+.content__description {
+    font-size: 1.2rem;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    margin-bottom: 3rem;
+}
+
+/* Hero Stats */
+.hero-stats {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    margin-top: 4rem;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Scroll Down Indicator */
+.scroll-down-indicator {
+    position: fixed;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: bounce 2s infinite;
+}
+
+.scroll-down-indicator:hover {
+    transform: translateX(-50%) scale(1.2);
+    filter: drop-shadow(0 4px 8px rgba(88, 196, 130, 0.5));
+}
+
+.scroll-down-indicator svg {
+    width: 40px;
+    height: 40px;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+}
+
+/* CV Scroll Section */
+.cv-scroll-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: none;
+    opacity: 0;
+}
+
+.cv-scroll-section .scene {
+    pointer-events: none;
+}
+
+/* Responsive for landing page */
+@media (max-width: 768px) {
+    .content__inner {
+        padding: 1rem;
+    }
+
+    .content__title {
+        font-size: 3rem;
+    }
+
+    .content__subtitle {
+        font-size: 1.2rem;
+    }
+
+    .content__description {
+        font-size: 1rem;
+    }
+
+    .hero-stats {
+        gap: 2rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    .scroll-down-indicator {
+        bottom: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .content__title {
+        font-size: 2.5rem;
+    }
+
+    .hero-stats {
+        gap: 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 2rem;
     }
 }

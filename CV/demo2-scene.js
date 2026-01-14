@@ -3,7 +3,12 @@
 (function() {
     'use strict';
 
-    var canvas = document.querySelector('#scene');
+    var canvas = document.querySelector('#warpScene');
+    if (!canvas) {
+        console.error('Warp canvas not found');
+        return;
+    }
+
     var width = canvas.offsetWidth,
         height = canvas.offsetHeight;
 
@@ -94,44 +99,49 @@
     var dots = new THREE.Points(bufferDotsGeom, shaderMaterial);
     scene.add(dots);
 
-    // Animation state object for GSAP
-    var animationState = {
-        warpProgress: 0
-    };
+    // Create individual animation objects for each vertex (like original)
+    var vertexObjects = [];
+    for (var i = 0; i < sphereGeom.vertices.length; i++) {
+        vertexObjects.push({
+            x: originalPositions[i * 3],
+            y: originalPositions[i * 3 + 1],
+            z: originalPositions[i * 3 + 2]
+        });
+    }
 
-    // Single GSAP timeline for warp animation
-    gsap.to(animationState, {
-        warpProgress: 1,
-        duration: 4,
-        ease: "back.out(1.7)",
-        repeat: -1,
-        yoyo: true,
-        yoyoEase: "back.out(1.7)"
-    });
+    // Animate each dot individually (exact original approach)
+    function animateDot(index, vector) {
+        var delay = Math.abs(vector.y / radius) * 2;
 
-    // Update positions based on animation progress
+        gsap.to(vector, {
+            x: 0,
+            z: 0,
+            duration: 4,
+            ease: "back.out(1.7)",
+            delay: delay,
+            repeat: -1,
+            yoyo: true,
+            yoyoEase: "back.out(1.7)",
+            onUpdate: function() {
+                updateDot(index, vector);
+            }
+        });
+    }
+
+    // Update single dot position
+    function updateDot(index, vector) {
+        positions[index * 3] = vector.x;
+        positions[index * 3 + 1] = vector.y;
+        positions[index * 3 + 2] = vector.z;
+    }
+
+    // Start animations for all vertices
+    for (var i = 0; i < vertexObjects.length; i++) {
+        animateDot(i, vertexObjects[i]);
+    }
+
+    // Update positions (called in render loop)
     function updatePositions() {
-        var progress = animationState.warpProgress;
-        var minRadius = 0.2; // Minimum radius ratio (20% of original) - stops before passing through center
-
-        for (var i = 0; i < positions.length / 3; i++) {
-            var origX = originalPositions[i * 3];
-            var origY = originalPositions[i * 3 + 1];
-            var origZ = originalPositions[i * 3 + 2];
-
-            // Calculate delay based on Y position
-            var normalizedY = Math.abs(origY / radius);
-            var delayedProgress = Math.max(0, Math.min(1, (progress - normalizedY * 0.5) * 2));
-
-            // Calculate compression factor that stops at minRadius
-            var compressionFactor = 1 - (delayedProgress * (1 - minRadius));
-
-            // Interpolate between original and minimum radius
-            positions[i * 3] = origX * compressionFactor;
-            positions[i * 3 + 1] = origY; // Y stays the same
-            positions[i * 3 + 2] = origZ * compressionFactor;
-        }
-
         attributePositions.needsUpdate = true;
     }
 

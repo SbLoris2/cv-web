@@ -1,8 +1,21 @@
 // Three.js Scene - Quantum Organic Sphere
 
 var canvas = document.querySelector('#scene');
-var width = canvas.offsetWidth,
-    height = canvas.offsetHeight;
+if (!canvas) {
+    console.error('Scene canvas not found');
+} else {
+    // Force canvas to be visible for initialization
+    canvas.style.display = 'block';
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.zIndex = '0';
+}
+
+var width = window.innerWidth;
+var height = window.innerHeight;
 
 var renderer = new THREE.WebGLRenderer({
     canvas: canvas,
@@ -12,14 +25,14 @@ var renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
 renderer.setSize(width, height);
-renderer.setClearColor(0xF1F1F1, 1);
+
 // Get initial theme
 var currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-var bgColor = currentTheme === 'dark' ? 0x0F0F0F : 0xF1F1F1;
+var bgColor = currentTheme === 'dark' ? 0x0F0F0F : 0xFFFFFF;
 renderer.setClearColor(bgColor, 1);
 
 // Expose renderer globally for theme switching
-window.sceneRenderer = renderer;
+window.cvSceneRenderer = renderer;
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(100, width / height, 0.1, 10000);

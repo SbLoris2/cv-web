@@ -21,6 +21,10 @@
     let touchStartX = 0;
     let touchEndX = 0;
     let isMobileMenuOpen = false;
+    let horizontalScrollEnabled = false; // Start disabled
+
+    // Expose currentSlide globally
+    window.currentSlide = currentSlide;
 
     // Initialize
     function init() {
@@ -36,9 +40,11 @@
         window.addEventListener('touchstart', handleTouchStart, { passive: true });
         window.addEventListener('touchend', handleTouchEnd, { passive: true });
         
-        // Navigation clicks
+        // Navigation clicks - only for links with data-slide attribute
         navLinks.forEach(link => {
-            link.addEventListener('click', handleNavClick);
+            if (link.hasAttribute('data-slide')) {
+                link.addEventListener('click', handleNavClick);
+            }
         });
         
         // Contact button with data-slide
@@ -105,6 +111,7 @@
 
         isScrolling = true;
         currentSlide = index;
+        window.currentSlide = currentSlide; // Update global reference
 
         const translateX = -currentSlide * 100;
         slidesContainer.style.transform = `translateX(${translateX}vw)`;
@@ -148,12 +155,14 @@
 
     // Handle mouse wheel
     function handleWheel(e) {
+        if (!horizontalScrollEnabled) return; // Only handle when enabled
+
         e.preventDefault();
-        
+
         if (isScrolling) return;
-        
+
         const delta = Math.sign(e.deltaY || e.deltaX);
-        
+
         if (delta > 0) {
             // Scroll right
             goToSlide(currentSlide + 1);
@@ -257,6 +266,15 @@
             }
         });
     }
+
+    // Enable/Disable horizontal scroll functions
+    window.enableHorizontalScroll = function() {
+        horizontalScrollEnabled = true;
+    };
+
+    window.disableHorizontalScroll = function() {
+        horizontalScrollEnabled = false;
+    };
 
     // Start on load
     if (document.readyState === 'loading') {

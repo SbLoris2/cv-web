@@ -19,21 +19,10 @@
         }
     }
 
-    // Page load animations - Hero section
+    // Page load animations - Landing Page
     function initPageLoadAnimations() {
-        // Set initial states to ensure visibility after animation
-        gsap.set('.hero-contact .contact-btn', { clearProps: 'all' });
-        gsap.set('.scroll-indicator', { clearProps: 'all' });
-        gsap.set('.scroll-arrow', { clearProps: 'all' });
-
         const tl = gsap.timeline({
-            defaults: { ease: 'power3.out' },
-            onComplete: function() {
-                // Ensure all elements are fully visible and interactive after animation
-                gsap.set('.hero-contact .contact-btn', { clearProps: 'all' });
-                gsap.set('.scroll-indicator', { clearProps: 'all' });
-                gsap.set('.scroll-arrow', { clearProps: 'all' });
-            }
+            defaults: { ease: 'power3.out' }
         });
 
         // Animate header elements
@@ -53,40 +42,33 @@
         }, '-=0.5')
 
         // Animate hero subtitle
-        .from('.hero-subtitle', {
+        .from('.content__subtitle', {
             y: 50,
             opacity: 0,
             duration: 0.8
         }, '-=0.6')
 
         // Animate hero description
-        .from('.hero-description', {
+        .from('.content__description', {
             y: 30,
             opacity: 0,
             duration: 0.8
         }, '-=0.5')
 
-        // Animate contact buttons
-        .from('.hero-contact .contact-btn', {
+        // Animate hero stats
+        .from('.hero-stats .stat-item', {
             y: 30,
             opacity: 0,
             duration: 0.6,
             stagger: 0.2
-        }, '-=0.4');
+        }, '-=0.4')
 
-        // Don't animate scroll indicator and arrow - keep them visible
-        // Just ensure they are visible and start continuous arrow animation
-        gsap.set('.scroll-indicator', { opacity: 1, visibility: 'visible', clearProps: 'transform' });
-        gsap.set('.scroll-arrow', { opacity: 1, visibility: 'visible', clearProps: 'transform' });
-
-        // Start continuous animation for scroll arrow
-        gsap.to('.scroll-arrow svg', {
-            x: 10,
-            duration: 1,
-            repeat: -1,
-            yoyo: true,
-            ease: 'power1.inOut'
-        });
+        // Animate scroll down indicator
+        .from('.scroll-down-indicator', {
+            opacity: 0,
+            y: -20,
+            duration: 0.8
+        }, '-=0.3');
 
         // Pulse animation for theme toggle
         gsap.to('.theme-toggle', {
@@ -118,7 +100,7 @@
 
     // Animate content when slide becomes active
     function animateSlideContent(slideIndex) {
-        const slides = document.querySelectorAll('.slide');
+        const slides = document.querySelectorAll('.cv-scroll-section .slide');
         if (!slides[slideIndex]) return;
 
         const slide = slides[slideIndex];
@@ -136,10 +118,6 @@
         });
 
         switch(slideId) {
-            case 'hero':
-                // Hero is already animated on load
-                break;
-
             case 'experience':
                 animateExperienceSlide(tl, slide);
                 break;
@@ -157,6 +135,9 @@
                 break;
         }
     }
+
+    // Expose globally
+    window.animateSlideContent = animateSlideContent;
 
     // Experience slide animations
     function animateExperienceSlide(tl, slide) {

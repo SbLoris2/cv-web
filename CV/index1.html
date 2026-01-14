@@ -12,120 +12,153 @@
 </head>
 <body class="demo-3">
     <main>
-        <!-- Fixed Header -->
+        <!-- Fixed Header - Always Visible -->
         <div class="content content--fixed">
-           <header class="main-header">
-    <a href="#hero" class="logo">LL</a>
-    <nav id="mobileNav">
-        <ul class="nav-links">
-            <li><a href="#hero" data-slide="0">Accueil</a></li>
-            <li><a href="#experience" data-slide="1">Expérience</a></li>
-            <li><a href="#skills" data-slide="2">Compétences</a></li>
-            <li><a href="#projects" data-slide="3">Projets</a></li>
-            <li><a href="#education" data-slide="4">Formation</a></li>
-        </ul>
-    </nav>
-    <div style="display: flex; gap: 1rem; align-items: center;">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-            <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-                <path d="M12 5V3M12 21V19M16.95 7.05L18.364 5.636M5.636 18.364L7.05 16.95M19 12H21M3 12H5M16.95 16.95L18.364 18.364M5.636 5.636L7.05 7.05" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-    </div>
-</header>
-
-        <!-- Mobile Menu Overlay -->
-        <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+            <header class="main-header">
+                <a href="#hero" class="logo">LL</a>
+                <nav id="mobileNav">
+                    <ul class="nav-links">
+                        <li><a href="#hero">Accueil</a></li>
+                        <li><a href="#cv-scroll" id="cvLink">CV</a></li>
+                    </ul>
+                </nav>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 5V3M12 21V19M16.95 7.05L18.364 5.636M5.636 18.364L7.05 16.95M19 12H21M3 12H5M16.95 16.95L18.364 18.364M5.636 5.636L7.05 7.05" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </header>
+            <!-- Mobile Menu Overlay -->
+            <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
         </div>
 
-        <!-- WebGL Canvas Background -->
-        <canvas class="scene scene--full" id="scene"></canvas>
+        <!-- Vertical Landing Page -->
+        <div class="landing-page" id="landingPage">
+            <!-- Warp Drive Canvas -->
+            <canvas class="scene scene--full" id="warpScene"></canvas>
 
-        <!-- Horizontal Scroll Container -->
-        <div class="horizontal-scroll-wrapper">
-            <div class="slides-container" id="slidesContainer">
-                
-                <!-- Slide 1: Hero -->
-                <section class="slide" id="hero">
-                    <div class="slide-content">
-                        <h1 class="content__title">Loris<br>Lebreton</h1>
-                        <p class="hero-subtitle">Développeur Full-Stack • Expert Java Spring & Vue.js</p>
-                        <p class="hero-description">
-                            Architecte logiciel passionné par les solutions réactives et les systèmes distribués. 
-                            Spécialiste en développement d'applications d'entreprise avec plus de 8 ans d'expérience.
-                        </p>
-                        <div class="hero-contact">
-                            <a href="mailto:contact@example.com" class="contact-btn contact-btn--primary">
-                                <i class="fa-solid fa-envelope"></i>
-                                <span>Me contacter</span>
-                            </a>
-                            <a href="#projects" class="contact-btn" data-slide="3">
-                                <i class="fa-solid fa-briefcase"></i>
-                                <span>Voir mes projets</span>
-                            </a>
-                            <a href="demo2.html" class="contact-btn contact-btn--special">
-                                <i class="fa-solid fa-rocket"></i>
-                                <span>Effet Warp Drive</span>
-                            </a>
+            <!-- Shader Programs for Warp Drive -->
+            <script type="x-shader/x-vertex" id="wrapVertexShader">
+                #define PI 3.1415926535897932384626433832795
+                attribute float size;
+                void main() {
+                    vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+                    gl_PointSize = 3.0;
+                    gl_Position = projectionMatrix * mvPosition;
+                }
+            </script>
+            <script type="x-shader/x-fragment" id="wrapFragmentShader">
+                uniform sampler2D texture;
+                uniform vec3 color;
+                void main(){
+                    vec4 textureColor = texture2D( texture, gl_PointCoord );
+                    if ( textureColor.a < 0.3 ) discard;
+                    vec4 dotColor = vec4(color, 0.6);
+                    vec4 finalColor = dotColor * textureColor;
+                    gl_FragColor = finalColor;
+                }
+            </script>
+
+            <!-- Hero Content -->
+            <section class="warp-hero" id="hero">
+                <div class="content__inner">
+                    <h1 class="content__title">Loris Lebreton</h1>
+                    <h3 class="content__subtitle">Développeur Full-Stack Senior</h3>
+                    <p class="content__description">
+                        Architecte logiciel passionné par les solutions réactives et les systèmes distribués.
+                        Expert en développement d'applications d'entreprise avec Java Spring Boot et Vue.js.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">8+</span>
+                            <span class="stat-label">Années d'expérience</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Projets réalisés</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">15+</span>
+                            <span class="stat-label">Technologies maîtrisées</span>
                         </div>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                <!-- Slide 2: Experience -->
-                <section class="slide" id="experience">
-                    <div class="slide-content">
-                        <div class="section-header">
-                            <div class="section-number">01 — Parcours</div>
-                            <h2 class="section-title">Expérience</h2>
-                            <p class="section-description">
-                                Plus de 8 années d'expertise dans le développement de solutions logicielles d'entreprise.
-                            </p>
+            <!-- Scroll Down Indicator -->
+            <div class="scroll-down-indicator">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- CV Horizontal Scroll Section -->
+        <div class="cv-scroll-section" id="cv-scroll">
+            <!-- WebGL Canvas Background for CV -->
+            <canvas class="scene scene--full" id="scene"></canvas>
+
+            <!-- Horizontal Scroll Container -->
+            <div class="horizontal-scroll-wrapper">
+                <div class="slides-container" id="slidesContainer">
+
+                    <!-- Slide 1: Experience -->
+                    <section class="slide" id="experience">
+                        <div class="slide-content">
+                            <div class="section-header">
+                                <div class="section-number">01 — Parcours</div>
+                                <h2 class="section-title">Expérience</h2>
+                                <p class="section-description">
+                                    Plus de 8 années d'expertise dans le développement de solutions logicielles d'entreprise.
+                                </p>
+                            </div>
+
+                            <div class="experience-grid">
+                                <article class="experience-card">
+                                    <div class="experience-period">2020 — Présent</div>
+                                    <h3 class="experience-title">Développeur Full-Stack Senior</h3>
+                                    <div class="experience-company">Midi Mini Informatique</div>
+                                    <p class="experience-description">
+                                        Architecte et développeur principal du système ERP MMI ONE pour la distribution de fruits
+                                        et légumes. Conception d'architectures backend réactives avec Spring Boot WebFlux/R2DBC.
+                                    </p>
+                                </article>
+
+                                <article class="experience-card">
+                                    <div class="experience-period">2018 — 2020</div>
+                                    <h3 class="experience-title">Développeur Java & Android</h3>
+                                    <div class="experience-company">Projets Freelance</div>
+                                    <p class="experience-description">
+                                        Développement d'applications mobiles natives Android et cross-platform avec React Native/Expo.
+                                        Architecture MVC, intégration SQLite, et création de services backend RESTful.
+                                    </p>
+                                </article>
+
+                                <article class="experience-card">
+                                    <div class="experience-period">2016 — 2018</div>
+                                    <h3 class="experience-title">Développeur Web Junior</h3>
+                                    <div class="experience-company">Agence Digitale</div>
+                                    <p class="experience-description">
+                                        Développement de sites web et applications métier avec frameworks JavaScript modernes.
+                                        Intégration CMS, optimisation frontend, et mise en place de pipelines CI/CD.
+                                    </p>
+                                </article>
+                            </div>
                         </div>
+                    </section>
 
-                        <div class="experience-grid">
-                            <article class="experience-card">
-                                <div class="experience-period">2020 — Présent</div>
-                                <h3 class="experience-title">Développeur Full-Stack Senior</h3>
-                                <div class="experience-company">Midi Mini Informatique</div>
-                                <p class="experience-description">
-                                    Architecte et développeur principal du système ERP MMI ONE pour la distribution de fruits 
-                                    et légumes. Conception d'architectures backend réactives avec Spring Boot WebFlux/R2DBC.
-                                </p>
-                            </article>
-
-                            <article class="experience-card">
-                                <div class="experience-period">2018 — 2020</div>
-                                <h3 class="experience-title">Développeur Java & Android</h3>
-                                <div class="experience-company">Projets Freelance</div>
-                                <p class="experience-description">
-                                    Développement d'applications mobiles natives Android et cross-platform avec React Native/Expo. 
-                                    Architecture MVC, intégration SQLite, et création de services backend RESTful.
-                                </p>
-                            </article>
-
-                            <article class="experience-card">
-                                <div class="experience-period">2016 — 2018</div>
-                                <h3 class="experience-title">Développeur Web Junior</h3>
-                                <div class="experience-company">Agence Digitale</div>
-                                <p class="experience-description">
-                                    Développement de sites web et applications métier avec frameworks JavaScript modernes. 
-                                    Intégration CMS, optimisation frontend, et mise en place de pipelines CI/CD.
-                                </p>
-                            </article>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Slide 3: Skills -->
+                <!-- Slide 2: Skills -->
                 <section class="slide" id="skills">
                     <div class="slide-content">
                         <div class="section-header">
@@ -184,7 +217,7 @@
                     </div>
                 </section>
 
-                <!-- Slide 4: Projects -->
+                <!-- Slide 3: Projects -->
                 <section class="slide" id="projects">
                     <div class="slide-content">
                         <div class="section-header">
@@ -250,7 +283,7 @@
                     </div>
                 </section>
 
-                <!-- Slide 5: Education -->
+                <!-- Slide 4: Education -->
                 <section class="slide" id="education">
                     <div class="slide-content">
                         <div class="section-header">
@@ -291,23 +324,32 @@
                     </div>
                 </section>
 
+                </div>
             </div>
-        </div>
 
-        <!-- Scroll Indicator -->
-        <div class="scroll-indicator">
-            <span class="current-slide">01</span>
-            <span class="separator">/</span>
-            <span class="total-slides">05</span>
-        </div>
+            <!-- Scroll Indicator for horizontal scroll -->
+            <div class="scroll-indicator">
+                <span class="current-slide">01</span>
+                <span class="separator">/</span>
+                <span class="total-slides">04</span>
+            </div>
 
-        <!-- Scroll Arrow (only visible on first slide) -->
-        <div class="scroll-arrow" id="scrollArrow">
-            <div class="arrow-container">
-                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 30H40M40 30L32 22M40 30L32 38" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Return to Landing Button -->
+            <button class="return-home-btn" id="returnHomeBtn" aria-label="Retour à l'accueil">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span class="arrow-text">Scroll</span>
+                <span>Accueil</span>
+            </button>
+
+            <!-- Scroll Arrow (only visible on first slide) -->
+            <div class="scroll-arrow" id="scrollArrow">
+                <div class="arrow-container">
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 30H40M40 30L32 22M40 30L32 38" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="arrow-text">Scroll</span>
+                </div>
             </div>
         </div>
     </main>
@@ -315,10 +357,12 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="demo2-scene.js"></script>
     <script src="Perlin.js"></script>
     <script src="Scene.js"></script>
-    <script src="Navigation.js"></script>
     <script src="ThemeToggle.js"></script>
+    <script src="VerticalScroll.js"></script>
+    <script src="Navigation.js"></script>
     <script src="Animations.js"></script>
 </body>
 </html>

@@ -32,9 +32,16 @@
 
     // Update Three.js renderer background color
     function updateRendererBackground(theme) {
+        const bgColor = theme === 'dark' ? 0x0F0F0F : 0xFFFFFF;
+
+        // Update warp drive canvas (landing page)
         if (window.sceneRenderer) {
-            const bgColor = theme === 'dark' ? 0x0F0F0F : 0xF1F1F1;
             window.sceneRenderer.setClearColor(bgColor, 1);
+        }
+
+        // Update CV canvas (Perlin sphere)
+        if (window.cvSceneRenderer) {
+            window.cvSceneRenderer.setClearColor(bgColor, 1);
         }
     }
 
