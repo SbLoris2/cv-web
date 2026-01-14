@@ -26,49 +26,45 @@
         });
 
         // Animate header elements
-        tl.from('.main-header', {
-            y: -100,
-            opacity: 0,
-            duration: 1,
-            ease: 'power4.out'
-        })
+        tl.fromTo('.main-header',
+            { y: -100, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 1, ease: 'power4.out' }
+        )
 
         // Animate hero title with split effect
-        .from('.content__title', {
-            y: 100,
-            opacity: 0,
-            duration: 1.2,
-            ease: 'power4.out'
-        }, '-=0.5')
+        .fromTo('.content__title',
+            { y: 100, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 1.2, ease: 'power4.out' },
+            '-=0.5'
+        )
 
         // Animate hero subtitle
-        .from('.content__subtitle', {
-            y: 50,
-            opacity: 0,
-            duration: 0.8
-        }, '-=0.6')
+        .fromTo('.content__subtitle',
+            { y: 50, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.8 },
+            '-=0.6'
+        )
 
         // Animate hero description
-        .from('.content__description', {
-            y: 30,
-            opacity: 0,
-            duration: 0.8
-        }, '-=0.5')
+        .fromTo('.content__description',
+            { y: 30, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.8 },
+            '-=0.5'
+        )
 
         // Animate hero stats
-        .from('.hero-stats .stat-item', {
-            y: 30,
-            opacity: 0,
-            duration: 0.6,
-            stagger: 0.2
-        }, '-=0.4')
+        .fromTo('.hero-stats .stat-item',
+            { y: 30, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.6, stagger: 0.2 },
+            '-=0.4'
+        )
 
         // Animate scroll down indicator
-        .from('.scroll-down-indicator', {
-            opacity: 0,
-            y: -20,
-            duration: 0.8
-        }, '-=0.3');
+        .fromTo('.scroll-down-indicator',
+            { y: -20, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.8 },
+            '-=0.3'
+        );
 
         // Pulse animation for theme toggle
         gsap.to('.theme-toggle', {
@@ -112,8 +108,7 @@
         // Animation timeline for the slide
         const tl = gsap.timeline({
             defaults: {
-                ease: 'power3.out',
-                clearProps: 'all'
+                ease: 'power3.out'
             }
         });
 
@@ -141,28 +136,25 @@
 
     // Experience slide animations
     function animateExperienceSlide(tl, slide) {
-        tl.from(slide.querySelector('.section-number'), {
-            opacity: 0,
-            y: 30,
-            duration: 0.6
-        })
-        .from(slide.querySelector('.section-title'), {
-            opacity: 0,
-            y: 40,
-            duration: 0.8
-        }, '-=0.4')
-        .from(slide.querySelector('.section-description'), {
-            opacity: 0,
-            y: 20,
-            duration: 0.6
-        }, '-=0.5')
-        .from(slide.querySelectorAll('.experience-card'), {
-            opacity: 0,
-            y: 60,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: 'back.out(1.2)'
-        }, '-=0.3');
+        tl.fromTo(slide.querySelector('.section-number'),
+            { y: 30, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.6 }
+        )
+        .fromTo(slide.querySelector('.section-title'),
+            { y: 40, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.8 },
+            '-=0.4'
+        )
+        .fromTo(slide.querySelector('.section-description'),
+            { y: 20, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.6 },
+            '-=0.5'
+        )
+        .fromTo(slide.querySelectorAll('.experience-card'),
+            { y: 60, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.2, ease: 'back.out(1.2)' },
+            '-=0.3'
+        );
 
         // Add hover animations for experience cards
         slide.querySelectorAll('.experience-card').forEach(card => {
@@ -185,38 +177,30 @@
 
     // Skills slide animations
     function animateSkillsSlide(tl, slide) {
-        tl.from(slide.querySelector('.section-number'), {
-            opacity: 0,
-            x: -30,
-            duration: 0.6
-        })
-        .from(slide.querySelector('.section-title'), {
-            opacity: 0,
-            x: -40,
-            duration: 0.8
-        }, '-=0.4')
-        .from(slide.querySelector('.section-description'), {
-            opacity: 0,
-            x: -20,
-            duration: 0.6
-        }, '-=0.5')
-        .from(slide.querySelectorAll('.skill-category'), {
-            opacity: 0,
-            scale: 0.8,
-            duration: 0.7,
-            stagger: 0.15,
-            ease: 'back.out(1.5)'
-        }, '-=0.3')
-        .from(slide.querySelectorAll('.skill-tag'), {
-            opacity: 0,
-            scale: 0,
-            duration: 0.4,
-            stagger: {
-                each: 0.05,
-                from: 'start'
-            },
-            ease: 'back.out(2)'
-        }, '-=0.5');
+        tl.fromTo(slide.querySelector('.section-number'),
+            { x: -30, autoAlpha: 0 },
+            { x: 0, autoAlpha: 1, duration: 0.6 }
+        )
+        .fromTo(slide.querySelector('.section-title'),
+            { x: -40, autoAlpha: 0 },
+            { x: 0, autoAlpha: 1, duration: 0.8 },
+            '-=0.4'
+        )
+        .fromTo(slide.querySelector('.section-description'),
+            { x: -20, autoAlpha: 0 },
+            { x: 0, autoAlpha: 1, duration: 0.6 },
+            '-=0.5'
+        )
+        .fromTo(slide.querySelectorAll('.skill-category'),
+            { scale: 0.8, autoAlpha: 0 },
+            { scale: 1, autoAlpha: 1, duration: 0.7, stagger: 0.15, ease: 'back.out(1.5)' },
+            '-=0.3'
+        )
+        .fromTo(slide.querySelectorAll('.skill-tag'),
+            { scale: 0, autoAlpha: 0 },
+            { scale: 1, autoAlpha: 1, duration: 0.4, stagger: { each: 0.05, from: 'start' }, ease: 'back.out(2)' },
+            '-=0.5'
+        );
 
         // Add hover animation for skill tags
         slide.querySelectorAll('.skill-tag').forEach(tag => {
@@ -239,31 +223,25 @@
 
     // Projects slide animations
     function animateProjectsSlide(tl, slide) {
-        tl.from(slide.querySelector('.section-number'), {
-            opacity: 0,
-            rotationY: 90,
-            duration: 0.8
-        })
-        .from(slide.querySelector('.section-title'), {
-            opacity: 0,
-            rotationY: 90,
-            duration: 0.8
-        }, '-=0.6')
-        .from(slide.querySelectorAll('.project-card'), {
-            opacity: 0,
-            x: -100,
-            rotationX: -15,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: 'power3.out'
-        }, '-=0.4')
-        .from(slide.querySelectorAll('.project-icon'), {
-            rotation: -360,
-            scale: 0,
-            duration: 0.6,
-            stagger: 0.2,
-            ease: 'back.out(2)'
-        }, '-=1.2');
+        tl.fromTo(slide.querySelector('.section-number'),
+            { rotationY: 90, autoAlpha: 0 },
+            { rotationY: 0, autoAlpha: 1, duration: 0.8 }
+        )
+        .fromTo(slide.querySelector('.section-title'),
+            { rotationY: 90, autoAlpha: 0 },
+            { rotationY: 0, autoAlpha: 1, duration: 0.8 },
+            '-=0.6'
+        )
+        .fromTo(slide.querySelectorAll('.project-card'),
+            { x: -100, rotationX: -15, autoAlpha: 0 },
+            { x: 0, rotationX: 0, autoAlpha: 1, duration: 0.8, stagger: 0.2, ease: 'power3.out' },
+            '-=0.4'
+        )
+        .fromTo(slide.querySelectorAll('.project-icon'),
+            { rotation: -360, scale: 0, autoAlpha: 0 },
+            { rotation: 0, scale: 1, autoAlpha: 1, duration: 0.6, stagger: 0.2, ease: 'back.out(2)' },
+            '-=1.2'
+        );
 
         // Add hover animation for project cards
         slide.querySelectorAll('.project-card').forEach(card => {
@@ -296,31 +274,25 @@
 
     // Education slide animations
     function animateEducationSlide(tl, slide) {
-        tl.from(slide.querySelector('.section-number'), {
-            opacity: 0,
-            scale: 0,
-            duration: 0.6,
-            ease: 'back.out(2)'
-        })
-        .from(slide.querySelector('.section-title'), {
-            opacity: 0,
-            scale: 0.5,
-            duration: 0.8,
-            ease: 'back.out(1.7)'
-        }, '-=0.3')
-        .from(slide.querySelectorAll('.education-card'), {
-            opacity: 0,
-            y: 80,
-            rotation: 5,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: 'power3.out'
-        }, '-=0.4')
-        .from(slide.querySelector('footer'), {
-            opacity: 0,
-            y: 30,
-            duration: 0.8
-        }, '-=0.2');
+        tl.fromTo(slide.querySelector('.section-number'),
+            { opacity: 0, scale: 0, visibility: 'hidden' },
+            { opacity: 1, scale: 1, visibility: 'visible', duration: 0.6, ease: 'back.out(2)' }
+        )
+        .fromTo(slide.querySelector('.section-title'),
+            { opacity: 0, scale: 0.5, visibility: 'hidden' },
+            { opacity: 1, scale: 1, visibility: 'visible', duration: 0.8, ease: 'back.out(1.7)' },
+            '-=0.3'
+        )
+        .fromTo(slide.querySelectorAll('.education-card'),
+            { opacity: 0, y: 80, rotation: 5, visibility: 'hidden' },
+            { opacity: 1, y: 0, rotation: 0, visibility: 'visible', duration: 0.8, stagger: 0.15, ease: 'power3.out' },
+            '-=0.4'
+        )
+        .fromTo(slide.querySelector('footer'),
+            { opacity: 0, y: 30, visibility: 'hidden' },
+            { opacity: 1, y: 0, visibility: 'visible', duration: 0.8 },
+            '-=0.2'
+        );
 
         // Add hover animation for education cards
         slide.querySelectorAll('.education-card').forEach(card => {

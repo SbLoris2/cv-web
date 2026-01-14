@@ -32,7 +32,7 @@
 
     // Update Three.js renderer background color
     function updateRendererBackground(theme) {
-        const bgColor = theme === 'dark' ? 0x0F0F0F : 0xFFFFFF;
+        const bgColor = theme === 'dark' ? 0x0F0F0F : 0xF1F1F1;
 
         // Update warp drive canvas (landing page)
         if (window.sceneRenderer) {

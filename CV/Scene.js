@@ -28,7 +28,7 @@ renderer.setSize(width, height);
 
 // Get initial theme
 var currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-var bgColor = currentTheme === 'dark' ? 0x0F0F0F : 0xFFFFFF;
+var bgColor = currentTheme === 'dark' ? 0x0F0F0F : 0xF1F1F1;
 renderer.setClearColor(bgColor, 1);
 
 // Expose renderer globally for theme switching

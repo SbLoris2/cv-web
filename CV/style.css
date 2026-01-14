@@ -58,6 +58,21 @@ body {
     transform: none !important;
 }
 
+/* Hide elements that will be animated by GSAP - prevents flash */
+.section-number,
+.section-title,
+.section-description,
+.experience-card,
+.skill-category,
+.skill-tag,
+.project-card,
+.project-icon,
+.education-card,
+.cv-scroll-section footer {
+    opacity: 0;
+    visibility: hidden;
+}
+
 /* Smooth transitions for all animated elements */
 .experience-card,
 .skill-category,
@@ -120,6 +135,8 @@ main {
     justify-content: space-between;
     align-items: center;
     gap: 2rem;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .logo {
@@ -1336,6 +1353,8 @@ footer {
     margin: 0 0 1rem;
     font-weight: 800;
     text-transform: uppercase;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .content__subtitle {
@@ -1344,6 +1363,8 @@ footer {
     color: var(--color-primary);
     margin: 1rem 0 2rem;
     letter-spacing: 0.05em;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .content__description {
@@ -1351,6 +1372,8 @@ footer {
     color: var(--color-text-secondary);
     line-height: 1.8;
     margin-bottom: 3rem;
+    opacity: 0;
+    visibility: hidden;
 }
 
 /* Hero Stats */
@@ -1364,6 +1387,8 @@ footer {
 
 .stat-item {
     text-align: center;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .stat-number {
@@ -1398,6 +1423,8 @@ footer {
     cursor: pointer;
     transition: all 0.3s ease;
     animation: bounce 2s infinite;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .scroll-down-indicator:hover {
