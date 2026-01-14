@@ -105,24 +105,27 @@
 
         isScrolling = true;
         currentSlide = index;
-        
+
         const translateX = -currentSlide * 100;
         slidesContainer.style.transform = `translateX(${translateX}vw)`;
-        
+
         updateSlideIndicator();
         updateActiveNav();
         updateScrollArrow();
         updateSceneScroll();
-        
+
         // Close mobile menu if open
         if (isMobileMenuOpen) {
             closeMobileMenu();
         }
-        
+
         setTimeout(() => {
             isScrolling = false;
         }, 800);
     }
+
+    // Expose goToSlide globally for animations
+    window.goToSlide = goToSlide;
 
     // Update scene scroll progress
     function updateSceneScroll() {

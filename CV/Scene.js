@@ -98,24 +98,33 @@ function updateVertices(a) {
 // Render loop
 function render(a) {
     requestAnimationFrame(render);
-    
+
     // Smooth scroll interpolation
     scrollProgress += (targetScrollProgress - scrollProgress) * 0.05;
-    
+
+    // Responsive adjustments
+    var isMobile = window.innerWidth <= 768;
+
     // Move sphere based on scroll
-    // X position: move from left to right as we scroll
-    shape.position.x = (scrollProgress * 400) - 200; // Range: -200 to 200
-    
-    // Y position: slight wave motion
-    shape.position.y = Math.sin(scrollProgress * Math.PI * 2) * 30;
-    
-    // Z position: move closer/further
-    shape.position.z = Math.cos(scrollProgress * Math.PI) * 50;
-    
+    // X position: start at right, move left as we scroll
+    if (isMobile) {
+        // On mobile: center the sphere horizontally
+        shape.position.x = -50 + (scrollProgress * -100);
+    } else {
+        // On desktop: start at right
+        shape.position.x = 150 - (scrollProgress * 500);
+    }
+
+    // Y position: slight wave motion (adjust for mobile)
+    shape.position.y = Math.sin(scrollProgress * Math.PI * 2) * (isMobile ? 50 : 30);
+
+    // Z position: move closer/further (push back on mobile)
+    shape.position.z = Math.cos(scrollProgress * Math.PI) * 50 - (isMobile ? 100 : 0);
+
     // Rotation based on scroll
     shape.rotation.y = scrollProgress * Math.PI * 2;
     shape.rotation.z = Math.sin(scrollProgress * Math.PI) * 0.3;
-    
+
     updateVertices(a);
     renderer.render(scene, camera);
 }

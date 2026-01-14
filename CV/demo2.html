@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr" class="no-js" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loris Lebreton - Portfolio Interactif</title>
+    <meta name="description" content="Portfolio interactif de Loris Lebreton - Développeur Full-Stack" />
+    <link href="https://fonts.googleapis.com/css?family=Barlow:400,500,700|Poppins:600,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="demo2-style.css" />
+</head>
+<body class="demo-2">
+    <main>
+        <!-- Fixed Header -->
+        <div class="content content--fixed">
+            <header class="main-header">
+                <a href="index1.html" class="logo">LL</a>
+                <nav id="mobileNav">
+                    <ul class="nav-links">
+                        <li><a href="index1.html">Accueil</a></li>
+                        <li><a href="#competences">Compétences</a></li>
+                        <li><a href="#realisations">Réalisations</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 5V3M12 21V19M16.95 7.05L18.364 5.636M5.636 18.364L7.05 16.95M19 12H21M3 12H5M16.95 16.95L18.364 18.364M5.636 5.636L7.05 7.05" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+        </div>
+
+        <!-- WebGL Canvas Background -->
+        <canvas class="scene scene--full" id="scene"></canvas>
+
+        <!-- Shader Programs -->
+        <script type="x-shader/x-vertex" id="wrapVertexShader">
+            #define PI 3.1415926535897932384626433832795
+            attribute float size;
+            void main() {
+                vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+                gl_PointSize = 3.0;
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        </script>
+        <script type="x-shader/x-fragment" id="wrapFragmentShader">
+            uniform sampler2D texture;
+            uniform vec3 color;
+            void main(){
+                vec4 textureColor = texture2D( texture, gl_PointCoord );
+                if ( textureColor.a < 0.3 ) discard;
+                vec4 dotColor = vec4(color, 0.6);
+                vec4 finalColor = dotColor * textureColor;
+                gl_FragColor = finalColor;
+            }
+        </script>
+
+        <!-- Scrollable Content -->
+        <div class="content content--scroll">
+            <!-- Hero Section -->
+            <section class="hero-section" id="hero">
+                <div class="content__inner">
+                    <h1 class="content__title">Loris Lebreton</h1>
+                    <h3 class="content__subtitle">Développeur Full-Stack Senior</h3>
+                    <p class="content__description">
+                        Architecte logiciel passionné par les solutions réactives et les systèmes distribués.
+                        Expert en développement d'applications d'entreprise avec Java Spring Boot et Vue.js.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">8+</span>
+                            <span class="stat-label">Années d'expérience</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Projets réalisés</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">15+</span>
+                            <span class="stat-label">Technologies maîtrisées</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Compétences Section -->
+            <section class="section" id="competences">
+                <div class="content__inner">
+                    <h2 class="section__title">Stack Technologique</h2>
+                    <div class="skills-grid-alt">
+                        <div class="skill-item">
+                            <i class="fa-brands fa-java"></i>
+                            <h4>Java & Spring</h4>
+                            <p>Spring Boot, WebFlux, R2DBC, Architecture réactive</p>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fa-brands fa-vuejs"></i>
+                            <h4>Vue.js & Nuxt</h4>
+                            <p>Vue 3, Composition API, Pinia, Server-Side Rendering</p>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fa-solid fa-database"></i>
+                            <h4>Bases de données</h4>
+                            <p>PostgreSQL, MongoDB, Redis, Optimisation de requêtes</p>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fa-brands fa-docker"></i>
+                            <h4>DevOps</h4>
+                            <p>Docker, Kubernetes, CI/CD, GitLab, Jenkins</p>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fa-solid fa-code"></i>
+                            <h4>Architecture</h4>
+                            <p>Microservices, Design Patterns, Multi-tenant, DDD</p>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                            <h4>Mobile</h4>
+                            <p>React Native, Expo, Android natif, Responsive Design</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Réalisations Section -->
+            <section class="section section--dark" id="realisations">
+                <div class="content__inner">
+                    <h2 class="section__title">Projets Phares</h2>
+                    <div class="projects-grid-alt">
+                        <article class="project-item">
+                            <div class="project-number">01</div>
+                            <h3 class="project-title">
+                                <i class="fa-solid fa-cube"></i>
+                                ERP MMI ONE
+                            </h3>
+                            <p class="project-desc">
+                                Système ERP complet pour la distribution de fruits et légumes. Architecture microservices
+                                avec Spring Boot, gestion multi-tenant, et interfaces réactives Vue.js.
+                            </p>
+                            <div class="project-tech">
+                                <span>Spring Boot</span>
+                                <span>Vue.js</span>
+                                <span>PostgreSQL</span>
+                                <span>Docker</span>
+                            </div>
+                        </article>
+
+                        <article class="project-item">
+                            <div class="project-number">02</div>
+                            <h3 class="project-title">
+                                <i class="fa-solid fa-file-invoice"></i>
+                                Système Factur-X
+                            </h3>
+                            <p class="project-desc">
+                                Plateforme de validation de factures électroniques selon les normes françaises BR-FR.
+                                Architecture réactive avec WebFlux et Project Reactor.
+                            </p>
+                            <div class="project-tech">
+                                <span>Spring WebFlux</span>
+                                <span>R2DBC</span>
+                                <span>XML/XSD</span>
+                                <span>Redis</span>
+                            </div>
+                        </article>
+
+                        <article class="project-item">
+                            <div class="project-number">03</div>
+                            <h3 class="project-title">
+                                <i class="fa-solid fa-calculator"></i>
+                                Gestion des Taxes
+                            </h3>
+                            <p class="project-desc">
+                                Solution full-stack pour l'attribution et la gestion des taxes. Conception de schéma
+                                de base de données optimisé avec règles métier complexes.
+                            </p>
+                            <div class="project-tech">
+                                <span>Spring Boot</span>
+                                <span>Nuxt 3</span>
+                                <span>TypeScript</span>
+                                <span>PostgreSQL</span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="section" id="contact">
+                <div class="content__inner">
+                    <h2 class="section__title">Travaillons Ensemble</h2>
+                    <p class="contact-intro">
+                        Vous avez un projet ambitieux ? Discutons-en autour d'un café (virtuel ou réel).
+                    </p>
+                    <div class="contact-methods">
+                        <a href="mailto:loris.lebreton@example.com" class="contact-method">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>loris.lebreton@example.com</span>
+                        </a>
+                        <a href="tel:+33612345678" class="contact-method">
+                            <i class="fa-solid fa-phone"></i>
+                            <span>+33 6 12 34 56 78</span>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="contact-method">
+                            <i class="fa-brands fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="https://github.com" target="_blank" class="contact-method">
+                            <i class="fa-brands fa-github"></i>
+                            <span>GitHub</span>
+                        </a>
+                    </div>
+                    <div class="hero-contact">
+                        <a href="index1.html" class="contact-btn contact-btn--primary">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <span>Retour au CV classique</span>
+                        </a>
+                        <a href="#hero" class="contact-btn">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            <span>Haut de page</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="main-footer">
+                <p>© 2026 Loris Lebreton - Tous droits réservés</p>
+                <p>Développé avec Three.js, GSAP & ❤️</p>
+            </footer>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="ThemeToggle.js"></script>
+    <script src="demo2-scene.js"></script>
+</body>
+</html>
