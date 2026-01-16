@@ -11,11 +11,10 @@
     const slidesContainer = document.getElementById('slidesContainer');
     const slides = document.querySelectorAll('.slide');
     const scrollDownIndicator = document.querySelector('.scroll-down-indicator');
-    const returnHomeBtn = document.getElementById('returnHomeBtn');
     const scrollArrow = document.getElementById('scrollArrow');
 
-    // Header navigation
-    const heroLink = document.querySelector('a[href="#hero"]');
+    // Header navigation (select ALL links to hero, not just the first one)
+    const heroLinks = document.querySelectorAll('a[href="#hero"]');
     const cvLink = document.querySelector('a[href="#cv-scroll"]');
 
     // Indicators
@@ -52,13 +51,13 @@
         window.addEventListener('touchstart', handleTouchStart, { passive: true });
         window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-        // Header navigation
-        if (heroLink) {
-            heroLink.addEventListener('click', (e) => {
+        // Header navigation - attach to ALL hero links (logo + menu link)
+        heroLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
                 e.preventDefault();
                 goToLanding();
             });
-        }
+        });
 
         if (cvLink) {
             cvLink.addEventListener('click', (e) => {
@@ -70,14 +69,6 @@
         // Scroll down indicator
         if (scrollDownIndicator) {
             scrollDownIndicator.addEventListener('click', goToCVSection);
-        }
-
-        // Return home button
-        if (returnHomeBtn) {
-            returnHomeBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                goToLanding();
-            });
         }
 
         // Mobile menu
@@ -104,12 +95,12 @@
 
     // Update header navigation active state
     function updateHeaderNav() {
-        if (heroLink && cvLink) {
+        if (heroLinks && cvLink) {
             if (currentSection === 'landing') {
-                heroLink.classList.add('active');
+                heroLinks.forEach(link => link.classList.add('active'));
                 cvLink.classList.remove('active');
             } else {
-                heroLink.classList.remove('active');
+                heroLinks.forEach(link => link.classList.remove('active'));
                 cvLink.classList.add('active');
             }
         }
