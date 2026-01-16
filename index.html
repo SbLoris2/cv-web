@@ -11,6 +11,18 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body class="demo-3">
+    <!-- Loading Screen -->
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="loader-container">
+            <div class="loader-logo">LL</div>
+            <div class="loader-progress-bar">
+                <div class="loader-progress-fill" id="loaderProgressFill"></div>
+            </div>
+            <div class="loader-percentage" id="loaderPercentage">0%</div>
+            <div class="loader-text">Chargement en cours...</div>
+        </div>
+    </div>
+
     <main>
         <!-- Fixed Header - Always Visible -->
         <div class="content content--fixed">
@@ -396,6 +408,7 @@
     </main>
 
     <!-- Scripts -->
+    <script src="Loader.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="demo2-scene.js"></script>

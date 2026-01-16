@@ -58,6 +58,146 @@ body {
     transform: none !important;
 }
 
+/* ==================== LOADING SCREEN ==================== */
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--color-bg);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.loader-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.loader-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: 0.2em;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    text-shadow: 0 0 30px rgba(88, 196, 130, 0.3);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(0.95);
+    }
+}
+
+.loader-progress-bar {
+    position: relative;
+    width: 300px;
+    height: 4px;
+    background: rgba(88, 196, 130, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.loader-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 15px rgba(88, 196, 130, 0.5);
+}
+
+.loader-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.loader-percentage {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--color-text);
+    letter-spacing: 0.1em;
+}
+
+.loader-text {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    animation: fadeInOut 2s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Responsive loader */
+@media (max-width: 768px) {
+    .loader-logo {
+        font-size: 3rem;
+    }
+
+    .loader-progress-bar {
+        width: 250px;
+    }
+
+    .loader-percentage {
+        font-size: 1rem;
+    }
+
+    .loader-text {
+        font-size: 0.75rem;
+    }
+}
+
 /* Hide elements that will be animated by GSAP - prevents flash */
 .section-number,
 .section-title,

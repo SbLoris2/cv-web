@@ -166,4 +166,9 @@
     window.initContactScene = init;
     window.destroyContactScene = destroy;
 
+    // Report to loader that contact scene is ready (loaded, not initialized)
+    if (window.Loader && window.Loader.reportContactSceneReady) {
+        window.Loader.reportContactSceneReady();
+    }
+
 })();

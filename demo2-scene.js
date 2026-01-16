@@ -232,4 +232,9 @@
         ease: "back.out(1.7)"
     });
 
+    // Report to loader that warp scene is ready
+    if (window.Loader && window.Loader.reportWarpSceneReady) {
+        window.Loader.reportWarpSceneReady();
+    }
+
 })();

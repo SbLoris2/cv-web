@@ -9,8 +9,8 @@
         if (typeof gsap !== 'undefined') {
             console.log('GSAP loaded successfully');
 
-            // Initial page load animations
-            initPageLoadAnimations();
+            // Note: initPageLoadAnimations is now called by Loader.js after loading completes
+            // Don't call it here to avoid triggering animations before loader finishes
 
             // Setup slide animations
             setupSlideAnimations();
@@ -599,6 +599,7 @@
 
     // Expose globally
     window.animateContactPage = animateContactPage;
+    window.initPageLoadAnimations = initPageLoadAnimations;
 
     // Contact slide animations - Professional & Elegant (deprecated - for old structure)
     function animateContactSlide(tl, slide) {

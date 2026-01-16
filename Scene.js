@@ -173,3 +173,8 @@ window.addEventListener("resize", function(){
     resizeTm = clearTimeout(resizeTm);
     resizeTm = setTimeout(onResize, 200);
 });
+
+// Report to loader that CV scene is ready
+if (window.Loader && window.Loader.reportCVSceneReady) {
+    window.Loader.reportCVSceneReady();
+}
