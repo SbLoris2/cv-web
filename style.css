@@ -198,6 +198,79 @@ body {
     }
 }
 
+/* ==================== CUSTOM CURSOR ==================== */
+/* Hide default cursor on desktop */
+@media (hover: hover) and (pointer: fine) {
+    body, a, button, .skill-tag, .experience-card, .project-card, .education-card, .contact-link {
+        cursor: none !important;
+    }
+}
+
+/* Custom cursor container */
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    mix-blend-mode: difference;
+}
+
+/* Cursor dot (center point) */
+.cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 0 10px rgba(88, 196, 130, 0.5);
+}
+
+/* Cursor outline (hidden - not used) */
+.cursor-outline {
+    display: none;
+}
+
+/* Cursor states - Hover on clickable elements */
+.custom-cursor.hover .cursor-dot {
+    width: 20px;
+    height: 20px;
+    background: var(--color-primary);
+}
+
+/* Cursor state - Active (clicking) */
+.custom-cursor.active .cursor-dot {
+    width: 6px;
+    height: 6px;
+}
+
+/* Cursor state - Hidden (over text selection) */
+.custom-cursor.hidden {
+    opacity: 0;
+}
+
+/* Particle trail canvas */
+.particle-trail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4; /* More subtle particles */
+}
+
+/* Hide custom cursor on mobile/touch devices */
+@media (hover: none) or (pointer: coarse) {
+    .custom-cursor,
+    .particle-trail {
+        display: none !important;
+    }
+}
+
 /* Hide elements that will be animated by GSAP - prevents flash */
 .section-number,
 .section-title,
@@ -388,7 +461,8 @@ main {
 .slides-container {
     display: flex;
     height: 100vh;
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Custom easing for smooth scroll - matches GSAP power3.out */
+    transition: transform 1s cubic-bezier(0.215, 0.61, 0.355, 1);
     will-change: transform;
 }
 
@@ -653,13 +727,19 @@ main {
 
 .experience-card:hover {
     border-color: var(--color-primary);
-    transform: translateY(-8px);
+    transform: translateY(-8px) scale(1.02);
     background: var(--color-card-bg-hover);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 20px rgba(88, 196, 130, 0.1);
 }
 
 .experience-card:hover::before {
     height: 100%;
+}
+
+/* Micro-interaction: Card tilt effect on hover */
+.experience-card:hover .experience-title {
+    color: var(--color-primary);
+    transition: color 0.3s ease;
 }
 
 .experience-period {
@@ -738,13 +818,35 @@ main {
     color: var(--color-text);
     font-weight: 500;
     font-size: 0.9rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-tag::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--color-primary);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: -1;
 }
 
 .skill-tag:hover {
     background: var(--color-primary);
     color: #fff;
-    transform: scale(1.05);
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 5px 15px rgba(88, 196, 130, 0.3);
+}
+
+.skill-tag:hover::before {
+    width: 200%;
+    height: 200%;
 }
 
 /* Projects Section */
@@ -948,13 +1050,18 @@ main {
 .contact-link:hover {
     border-color: var(--color-primary);
     background: var(--color-card-bg-hover);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25), 0 0 20px rgba(88, 196, 130, 0.2);
 }
 
 .contact-link:hover .contact-icon {
     color: var(--color-primary);
-    transform: scale(1.1);
+    transform: scale(1.15) rotate(5deg);
+}
+
+/* Micro-interaction: Ripple effect on contact links */
+.contact-link:active {
+    transform: translateY(-4px) scale(0.98);
 }
 
 .contact-icon {
@@ -1623,6 +1730,19 @@ main {
     text-align: center;
     opacity: 0;
     visibility: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 1rem;
+}
+
+/* Micro-interaction: Stats hover effect */
+.stat-item:hover {
+    transform: translateY(-5px) scale(1.05);
+}
+
+.stat-item:hover .stat-number {
+    color: var(--color-primary-light);
+    text-shadow: 0 0 20px rgba(88, 196, 130, 0.4);
 }
 
 .stat-number {
@@ -1632,6 +1752,7 @@ main {
     font-weight: 800;
     color: var(--color-primary);
     line-height: 1;
+    transition: all 0.3s ease;
 }
 
 .stat-label {
@@ -1641,6 +1762,7 @@ main {
     margin-top: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    transition: color 0.3s ease;
 }
 
 /* Scroll Down Indicator */

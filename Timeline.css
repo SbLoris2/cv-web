@@ -1,0 +1,265 @@
+/* ==================== INTERACTIVE TIMELINE ==================== */
+
+.timeline-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Hide scrollbar */
+.timeline-container::-webkit-scrollbar {
+    display: none;
+}
+
+.timeline-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Timeline items container */
+.timeline-items {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 2rem;
+}
+
+/* Timeline vertical line - simple version */
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: rgba(88, 196, 130, 0.2);
+    transform: translateX(-50%);
+}
+
+/* Animated progress line - hidden for simplicity */
+.timeline-progress {
+    display: none;
+}
+
+/* Individual timeline item */
+.timeline-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 3rem;
+    opacity: 1;
+}
+
+/* Alternate left/right layout - simplified */
+.timeline-item:nth-child(odd) {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.timeline-item:nth-child(even) {
+    flex-direction: row;
+    text-align: left;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Timeline dot - simplified */
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    background: var(--color-primary);
+    border: 2px solid var(--color-bg);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dot hover effect - subtle */
+.timeline-item:hover .timeline-dot {
+    transform: translateX(-50%) scale(1.5);
+    box-shadow: 0 0 0 8px rgba(88, 196, 130, 0.15);
+}
+
+/* Education milestone - simplified */
+.timeline-dot--education {
+    width: 14px;
+    height: 14px;
+    background: var(--color-primary);
+}
+
+/* Timeline content card - simplified */
+.timeline-content {
+    flex: 1;
+    max-width: 45%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(88, 196, 130, 0.15);
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover effects - subtle */
+.timeline-content:hover {
+    border-color: rgba(88, 196, 130, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Content elements - simplified */
+.timeline-year {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+}
+
+.timeline-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.4rem;
+    line-height: 1.4;
+}
+
+.timeline-company {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.8rem;
+    opacity: 0.8;
+}
+
+.timeline-description {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+/* Tech tags - minimal */
+.timeline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.timeline-item:nth-child(odd) .timeline-tags {
+    justify-content: flex-end;
+}
+
+.timeline-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.3rem 0.6rem;
+    background: rgba(88, 196, 130, 0.1);
+    border-radius: 4px;
+    color: var(--color-primary);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    opacity: 0.8;
+}
+
+.timeline-tag:hover {
+    opacity: 1;
+    background: rgba(88, 196, 130, 0.2);
+}
+
+/* Year indicator - removed for cleaner look */
+.timeline-item::after {
+    display: none;
+}
+
+/* Responsive design - simplified */
+@media (max-width: 968px) {
+    .timeline-line {
+        left: 20px;
+    }
+
+    .timeline-item,
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even) {
+        flex-direction: row;
+        text-align: left;
+        padding-left: 50px;
+    }
+
+    .timeline-dot {
+        left: 20px;
+    }
+
+    .timeline-content {
+        max-width: 100%;
+    }
+
+    .timeline-tags {
+        justify-content: flex-start !important;
+    }
+}
+
+/* Timeline scroll indicator - Hidden */
+.timeline-scroll-indicator {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .timeline-container {
+        padding: 1rem 0.5rem 2rem;
+    }
+
+    .timeline-item {
+        margin-bottom: 2rem;
+        padding-left: 40px;
+    }
+
+    .timeline-line {
+        left: 15px;
+    }
+
+    .timeline-dot {
+        left: 15px;
+        width: 10px;
+        height: 10px;
+    }
+
+    .timeline-dot--education {
+        width: 12px;
+        height: 12px;
+    }
+
+    .timeline-content {
+        padding: 1rem;
+    }
+
+    .timeline-title {
+        font-size: 1rem;
+    }
+
+    .timeline-company {
+        font-size: 0.8rem;
+    }
+
+    .timeline-description {
+        font-size: 0.8rem;
+    }
+
+    .timeline-tag {
+        font-size: 0.65rem;
+        padding: 0.25rem 0.5rem;
+    }
+}

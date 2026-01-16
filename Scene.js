@@ -153,13 +153,31 @@ function onResize() {
     renderer.setSize(width, height);
 }
 
-// Mouse interaction
+// Mouse interaction with parallax
 var mouse = new THREE.Vector2(0.8, 0.5);
+var parallaxOffset = { x: 0, y: 0 };
 
 function onMouseMove(e) {
     TweenMax.to(mouse, 0.8, {
         y: (e.clientY / height),
         x: (e.clientX / width),
+        ease: Power1.easeOut
+    });
+
+    // Calculate parallax offset (subtle movement)
+    var mouseX = (e.clientX / width) - 0.5;
+    var mouseY = (e.clientY / height) - 0.5;
+
+    TweenMax.to(parallaxOffset, 1.2, {
+        x: mouseX * 30,
+        y: -mouseY * 30,
+        ease: Power1.easeOut
+    });
+
+    // Apply parallax to camera
+    TweenMax.to(camera.position, 1.5, {
+        x: parallaxOffset.x,
+        y: parallaxOffset.y,
         ease: Power1.easeOut
     });
 }

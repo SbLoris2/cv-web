@@ -187,21 +187,36 @@
         renderer.setSize(width, height);
     }
 
-    // Mouse interaction
+    // Mouse interaction with parallax
     var mouse = { x: 0, y: 0 };
     var targetRotation = { x: 0, z: 0 };
+    var targetPosition = { x: 0, y: 0 };
 
     function onMouseMove(e) {
         mouse.x = (e.clientX / window.innerWidth) - 0.5;
         mouse.y = (e.clientY / window.innerHeight) - 0.5;
 
+        // Rotation effect
         targetRotation.x = mouse.y * Math.PI * 0.5;
         targetRotation.z = mouse.x * Math.PI * 0.2;
+
+        // Parallax position effect (subtle)
+        targetPosition.x = mouse.x * 20;
+        targetPosition.y = -mouse.y * 20;
 
         gsap.to(dots.rotation, {
             x: targetRotation.x,
             z: targetRotation.z,
             duration: 2,
+            ease: "power2.out",
+            overwrite: 'auto'
+        });
+
+        // Apply parallax to position
+        gsap.to(dots.position, {
+            x: targetPosition.x,
+            y: targetPosition.y,
+            duration: 2.5,
             ease: "power2.out",
             overwrite: 'auto'
         });

@@ -329,6 +329,14 @@
             currentSlide = 0; // First slide
         }
 
+        // Remove all active classes
+        slides.forEach(slide => slide.classList.remove('active'));
+
+        // Add active class to current slide
+        if (slides[currentSlide]) {
+            slides[currentSlide].classList.add('active');
+        }
+
         const translateX = -currentSlide * 100;
         slidesContainer.style.transition = 'none';
         slidesContainer.style.transform = `translateX(${translateX}vw)`;
@@ -468,43 +476,78 @@
         );
     }
 
-    // Navigate to specific slide within CV
+    // Navigate to specific slide within CV with smooth GSAP animation
     function goToSlide(index) {
         if (currentSection !== 'cv') return;
         if (index < 0 || index >= slides.length || index === currentSlide || isScrolling) return;
 
         isScrolling = true;
+
+        // Remove active class from current slide
+        if (slides[currentSlide]) {
+            slides[currentSlide].classList.remove('active');
+        }
+
         currentSlide = index;
 
+        // Add active class to new slide
+        if (slides[currentSlide]) {
+            slides[currentSlide].classList.add('active');
+        }
+
         const translateX = -currentSlide * 100;
-        slidesContainer.style.transform = `translateX(${translateX}vw)`;
+
+        // Use GSAP for smooth transition with custom easing
+        if (typeof gsap !== 'undefined') {
+            gsap.to(slidesContainer, {
+                x: translateX + 'vw',
+                duration: 0.6,
+                ease: 'power3.out',
+                onUpdate: function() {
+                    // Update scene scroll progress during animation for smooth parallax
+                    if (window.updateSceneScroll) {
+                        const progress = currentSlide / (slides.length - 1);
+                        window.updateSceneScroll(progress);
+                    }
+                },
+                onComplete: function() {
+                    isScrolling = false;
+
+                    // Trigger slide animation
+                    if (window.animateSlideContent) {
+                        window.animateSlideContent(currentSlide);
+                    }
+                }
+            });
+        } else {
+            // Fallback without GSAP
+            slidesContainer.style.transform = `translateX(${translateX}vw)`;
+
+            setTimeout(() => {
+                isScrolling = false;
+                if (window.animateSlideContent) {
+                    window.animateSlideContent(currentSlide);
+                }
+            }, 800);
+        }
 
         updateSlideIndicator();
         updateScrollArrow();
         updateContactIndicator();
 
-        // Update scene scroll progress
-        if (window.updateSceneScroll) {
-            const progress = currentSlide / (slides.length - 1);
-            window.updateSceneScroll(progress);
-        }
-
         // Close mobile menu if open
         if (isMobileMenuOpen) {
             closeMobileMenu();
         }
-
-        setTimeout(() => {
-            isScrolling = false;
-
-            // Trigger slide animation
-            if (window.animateSlideContent) {
-                window.animateSlideContent(currentSlide);
-            }
-        }, 800);
     }
 
-    // Handle wheel scroll
+    // Smooth scroll with custom easing
+    let scrollAccumulator = 0;
+    let scrollTimeout = null;
+    const scrollThreshold = 100; // Amount of scroll needed to trigger navigation
+    const scrollDecay = 0.8; // How quickly accumulated scroll decays
+
+    // Handle wheel scroll with smooth easing
     function handleWheel(e) {
         if (isScrolling) return;
 
@@ -515,40 +558,159 @@
         if (currentSection === 'landing') {
             if (Math.abs(deltaY) > Math.abs(deltaX) && deltaY > 0) {
                 e.preventDefault();
-                goToCVSection();
+
+                // Accumulate scroll with easing
+                scrollAccumulator += deltaY;
+
+                // Clear existing timeout
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+
+                // Check if threshold reached
+                if (scrollAccumulator >= scrollThreshold) {
+                    scrollAccumulator = 0;
+                    goToCVSection();
+                } else {
+                    // Decay accumulator after a delay
+                    scrollTimeout = setTimeout(() => {
+                        scrollAccumulator *= scrollDecay;
+                    }, 150);
+                }
             }
         }
         // If we're in CV section, handle horizontal scroll and vertical to Contact
         else if (currentSection === 'cv') {
+            // Special handling for timeline slide (slide 0)
+            if (currentSlide === 0) {
+                // Check if timeline is complete
+                const timelineComplete = window.isTimelineComplete ? window.isTimelineComplete() : false;
+
+                // If timeline is NOT complete and scrolling forward, block navigation
+                if (!timelineComplete && (deltaY > 0 || deltaX > 0)) {
+                    // Let the timeline handle the scroll (don't prevent default)
+                    // User must complete timeline before moving to next slide
+                    return;
+                }
+
+                // If scrolling backward and timeline is at top, allow navigation back to landing
+                const timelineContainer = document.getElementById('timelineContainer');
+                const isAtTop = timelineContainer && timelineContainer.scrollTop === 0;
+
+                if ((deltaY < 0 || deltaX < 0) && isAtTop) {
+                    e.preventDefault();
+                    scrollAccumulator += (deltaY || deltaX);
+
+                    if (scrollTimeout) {
+                        clearTimeout(scrollTimeout);
+                    }
+
+                    if (scrollAccumulator <= -scrollThreshold) {
+                        scrollAccumulator = 0;
+                        goToLanding();
+                        return;
+                    } else {
+                        scrollTimeout = setTimeout(() => {
+                            scrollAccumulator *= scrollDecay;
+                        }, 150);
+                    }
+                    return;
+                } else if ((deltaY < 0 || deltaX < 0) && !isAtTop) {
+                    // If not at top, let the timeline handle the scroll
+                    return;
+                }
+
+                // If timeline complete and scrolling forward, allow navigation to next slide
+                if (timelineComplete && (deltaY > 0 || deltaX > 0)) {
+                    e.preventDefault();
+                    scrollAccumulator += (deltaY || deltaX);
+
+                    if (scrollTimeout) {
+                        clearTimeout(scrollTimeout);
+                    }
+
+                    if (scrollAccumulator >= scrollThreshold) {
+                        scrollAccumulator = 0;
+                        goToSlide(currentSlide + 1);
+                        // Reset timeline when leaving
+                        if (window.resetTimelineScroll) {
+                            window.resetTimelineScroll();
+                        }
+                    } else {
+                        scrollTimeout = setTimeout(() => {
+                            scrollAccumulator *= scrollDecay;
+                        }, 150);
+                    }
+                }
+                return;
+            }
+
+            // Normal handling for other slides
             e.preventDefault();
 
-            // If on last slide and scrolling down/right, go to Contact
-            if (currentSlide === slides.length - 1 && (deltaY > 0 || deltaX > 0)) {
-                goToContactSection();
-                return;
+            // Accumulate scroll
+            const scrollDelta = deltaY || deltaX;
+            scrollAccumulator += scrollDelta;
+
+            // Clear existing timeout
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
             }
 
-            // If on first slide and scrolling up/left, go to Landing
-            if (currentSlide === 0 && (deltaY < 0 || deltaX < 0)) {
-                goToLanding();
-                return;
-            }
+            // Check if threshold reached
+            if (Math.abs(scrollAccumulator) >= scrollThreshold) {
+                const direction = Math.sign(scrollAccumulator);
+                scrollAccumulator = 0;
 
-            const delta = Math.sign(deltaY || deltaX);
+                // If on last slide and scrolling down/right, go to Contact
+                if (currentSlide === slides.length - 1 && direction > 0) {
+                    goToContactSection();
+                    return;
+                }
 
-            if (delta > 0) {
-                goToSlide(currentSlide + 1);
-            } else if (delta < 0) {
-                goToSlide(currentSlide - 1);
+                // If on first slide and scrolling up/left, go to Landing
+                if (currentSlide === 0 && direction < 0) {
+                    goToLanding();
+                    return;
+                }
+
+                if (direction > 0) {
+                    goToSlide(currentSlide + 1);
+                } else if (direction < 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            } else {
+                // Decay accumulator after a delay
+                scrollTimeout = setTimeout(() => {
+                    scrollAccumulator *= scrollDecay;
+                }, 150);
             }
         }
         // If we're in Contact section, handle vertical scroll up to go back to CV
         else if (currentSection === 'contact') {
             if (deltaY < 0) {
                 e.preventDefault();
-                // Go back to last slide of CV
-                currentSlide = slides.length - 1;
-                goToCVSection();
+
+                // Accumulate scroll
+                scrollAccumulator += deltaY;
+
+                // Clear existing timeout
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+
+                // Check if threshold reached (negative for upward scroll)
+                if (scrollAccumulator <= -scrollThreshold) {
+                    scrollAccumulator = 0;
+                    // Go back to last slide of CV
+                    currentSlide = slides.length - 1;
+                    goToCVSection();
+                } else {
+                    // Decay accumulator after a delay
+                    scrollTimeout = setTimeout(() => {
+                        scrollAccumulator *= scrollDecay;
+                    }, 150);
+                }
             }
         }
     }

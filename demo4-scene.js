@@ -133,11 +133,25 @@
 
     const mouse = new THREE.Vector2(0.8, 0.5);
     function onMouseMove(e) {
+        mouse.x = e.clientX / window.innerWidth;
         mouse.y = e.clientY / window.innerHeight;
+
         if (typeof gsap !== 'undefined') {
+            // Rotation effect
             gsap.to(sphere.rotation, {
                 x: (mouse.y * 1),
                 duration: 2,
+                ease: 'power1.out'
+            });
+
+            // Parallax position effect (subtle)
+            const parallaxX = (mouse.x - 0.5) * 30;
+            const parallaxY = -(mouse.y - 0.5) * 30;
+
+            gsap.to(sphere.position, {
+                x: parallaxX,
+                y: parallaxY,
+                duration: 2.5,
                 ease: 'power1.out'
             });
         }
