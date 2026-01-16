@@ -73,6 +73,15 @@ body {
     visibility: hidden;
 }
 
+/* Contact section elements - hidden initially for GSAP animation */
+.contact-section.active .contact-title,
+.contact-section.active .contact-subtitle,
+.contact-section.active .contact-link,
+.contact-section.active .contact-location {
+    opacity: 0;
+    visibility: hidden;
+}
+
 /* Smooth transitions for all animated elements */
 .experience-card,
 .skill-category,
@@ -258,6 +267,8 @@ main {
     max-width: 1400px;
     width: 100%;
     margin: 0 auto;
+    perspective: 2000px;
+    transform-style: preserve-3d;
 }
 
 /* Scroll Indicator */
@@ -546,6 +557,8 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
+    perspective: 1500px;
+    transform-style: preserve-3d;
 }
 
 .skill-category {
@@ -554,6 +567,7 @@ main {
     padding: 2rem;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
 }
 
 .skill-category:hover {
@@ -671,11 +685,14 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
+    perspective: 1500px;
+    transform-style: preserve-3d;
 }
 
 .education-card {
     background: var(--color-card-bg);
     border: 2px solid var(--color-border);
+    transform-style: preserve-3d;
     padding: 2rem;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
@@ -708,37 +725,150 @@ main {
     color: var(--color-text-tertiary);
 }
 
-/* Footer */
-footer {
-    margin-top: 4rem;
-    padding-top: 3rem;
-    text-align: center;
-    border-top: 2px solid var(--color-border);
+/* Contact Section - Separate from CV */
+.contact-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 5;
+    display: none;
 }
 
-.footer-text {
-    font-size: 1rem;
-    color: var(--color-text-tertiary);
-    margin-bottom: 1rem;
+.contact-section.active {
+    display: block;
 }
 
-.footer-links {
+.scene--contact {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.8;
+}
+
+.contact-wrapper {
+    position: relative;
+    z-index: 1;
+    height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    gap: 3rem;
+}
+
+.contact-header {
+    text-align: center;
+}
+
+.contact-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+}
+
+.contact-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.05em;
+}
+
+.contact-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 2rem;
-    margin-top: 1.5rem;
+    width: 100%;
+    max-width: 900px;
 }
 
-.footer-link {
-    color: var(--color-primary);
+.contact-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2.5rem 2rem;
+    background: var(--color-card-bg);
+    border: 2px solid var(--color-border);
     text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
+    color: var(--color-text);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
-.footer-link:hover {
-    color: var(--color-primary-dark);
+.contact-link:hover {
+    border-color: var(--color-primary);
+    background: var(--color-card-bg-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
+
+.contact-link:hover .contact-icon {
+    color: var(--color-primary);
+    transform: scale(1.1);
+}
+
+.contact-icon {
+    color: var(--color-accent);
+    transition: all 0.3s ease;
+}
+
+.contact-link span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.contact-location {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 2.5rem;
+    background: var(--color-card-bg);
+    border: 2px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+}
+
+.contact-location svg {
+    color: var(--color-accent);
+}
+
+/* Scroll Down Indicator for CV to Contact */
+.scroll-down-contact-indicator {
+    position: fixed;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    cursor: pointer;
+}
+
+.scroll-down-contact-indicator.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-down-contact-indicator svg {
+    color: var(--color-accent);
+    animation: bounce 2s infinite;
+}
+
+/* Footer (removed from Education) */
 
 /* Scrollbar Styling */
 .experience-grid::-webkit-scrollbar,

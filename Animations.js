@@ -131,7 +131,7 @@
 
         if (sessionStorage.getItem(animationKey)) {
             // Animation already played, just show elements immediately
-            const elements = slide.querySelectorAll('.section-number, .section-title, .section-description, .experience-card, .skill-category, .skill-tag, .project-card, .project-icon, .education-card, footer');
+            const elements = slide.querySelectorAll('.section-number, .section-title, .section-description, .contact-subtitle, .experience-card, .skill-category, .skill-tag, .project-card, .project-icon, .education-card, .contact-link, .contact-location, footer');
             gsap.set(elements, {
                 autoAlpha: 1,
                 clearProps: 'transform'
@@ -140,7 +140,7 @@
         }
 
         // Get all animated elements in this slide
-        const elements = slide.querySelectorAll('.section-number, .section-title, .section-description, .experience-card, .skill-category, .skill-tag, .project-card, .project-icon, .education-card, footer');
+        const elements = slide.querySelectorAll('.section-number, .section-title, .section-description, .contact-subtitle, .experience-card, .skill-category, .skill-tag, .project-card, .project-icon, .education-card, .contact-link, .contact-location, footer');
 
         // Clear previous animations
         gsap.killTweensOf(elements);
@@ -174,6 +174,10 @@
 
             case 'education':
                 animateEducationSlide(tl, slide);
+                break;
+
+            case 'contact':
+                animateContactSlide(tl, slide);
                 break;
         }
     }
@@ -232,59 +236,97 @@
         });
     }
 
-    // Skills slide animations
+    // Skills slide animations - Professional & Smooth
     function animateSkillsSlide(tl, slide) {
-        // Set initial positions
-        gsap.set(slide.querySelector('.section-number'), { x: -30 });
-        gsap.set(slide.querySelector('.section-title'), { x: -40 });
-        gsap.set(slide.querySelector('.section-description'), { x: -20 });
-        gsap.set(slide.querySelectorAll('.skill-category'), { scale: 0.8 });
-        gsap.set(slide.querySelectorAll('.skill-tag'), { scale: 0 });
+        // Set initial positions - subtle and professional
+        gsap.set(slide.querySelector('.section-number'), {
+            y: 40,
+            transformOrigin: 'center center'
+        });
+        gsap.set(slide.querySelector('.section-title'), {
+            y: 50,
+            transformOrigin: 'center center'
+        });
+        gsap.set(slide.querySelector('.section-description'), {
+            y: 30,
+            transformOrigin: 'center center'
+        });
 
-        // Animate to final state
+        // Categories with simple fade and slide
+        const categories = slide.querySelectorAll('.skill-category');
+        gsap.set(categories, {
+            y: 60,
+            transformOrigin: 'center center'
+        });
+
+        // All tags start with simple fade
+        const allTags = slide.querySelectorAll('.skill-tag');
+        gsap.set(allTags, {
+            y: 20,
+            transformOrigin: 'center center'
+        });
+
+        // Animate header with smooth slide
         tl.to(slide.querySelector('.section-number'), {
-            x: 0,
-            autoAlpha: 1,
-            duration: 0.6
-        })
-        .to(slide.querySelector('.section-title'), {
-            x: 0,
-            autoAlpha: 1,
-            duration: 0.8
-        }, '-=0.4')
-        .to(slide.querySelector('.section-description'), {
-            x: 0,
-            autoAlpha: 1,
-            duration: 0.6
-        }, '-=0.5')
-        .to(slide.querySelectorAll('.skill-category'), {
-            scale: 1,
+            y: 0,
             autoAlpha: 1,
             duration: 0.7,
-            stagger: 0.15,
-            ease: 'back.out(1.5)'
-        }, '-=0.3')
-        .to(slide.querySelectorAll('.skill-tag'), {
-            scale: 1,
+            ease: 'power3.out'
+        })
+        .to(slide.querySelector('.section-title'), {
+            y: 0,
             autoAlpha: 1,
-            duration: 0.4,
-            stagger: { each: 0.05, from: 'start' },
-            ease: 'back.out(2)'
+            duration: 0.8,
+            ease: 'power3.out'
+        }, '-=0.5')
+        .to(slide.querySelector('.section-description'), {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.6,
+            ease: 'power3.out'
+        }, '-=0.6')
+
+        // Categories appear with smooth wave
+        .to(categories, {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.8,
+            stagger: {
+                each: 0.15,
+                from: 'start',
+                ease: 'power2.out'
+            },
+            ease: 'power3.out'
+        }, '-=0.4')
+
+        // ALL tags appear together with smooth opacity
+        .to(allTags, {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.7,
+            stagger: {
+                amount: 0.5,
+                from: 'start',
+                ease: 'power1.inOut'
+            },
+            ease: 'power2.out'
         }, '-=0.5');
 
-        // Add hover animation for skill tags
+        // Subtle professional hover animation for skill tags
         slide.querySelectorAll('.skill-tag').forEach(tag => {
             tag.addEventListener('mouseenter', () => {
                 gsap.to(tag, {
-                    scale: 1.1,
-                    duration: 0.2,
+                    scale: 1.08,
+                    y: -3,
+                    duration: 0.3,
                     ease: 'power2.out'
                 });
             });
             tag.addEventListener('mouseleave', () => {
                 gsap.to(tag, {
                     scale: 1,
-                    duration: 0.2,
+                    y: 0,
+                    duration: 0.3,
                     ease: 'power2.out'
                 });
             });
@@ -356,55 +398,309 @@
         });
     }
 
-    // Education slide animations
+    // Education slide animations - Professional & Elegant
     function animateEducationSlide(tl, slide) {
-        // Set initial positions
-        gsap.set(slide.querySelector('.section-number'), { scale: 0 });
-        gsap.set(slide.querySelector('.section-title'), { scale: 0.5 });
-        gsap.set(slide.querySelectorAll('.education-card'), { y: 80, rotation: 5 });
-        gsap.set(slide.querySelector('footer'), { y: 30 });
+        // Set initial positions - elegant fade and slide
+        gsap.set(slide.querySelector('.section-number'), {
+            y: 40,
+            scale: 0.95,
+            transformOrigin: 'center center'
+        });
+        gsap.set(slide.querySelector('.section-title'), {
+            y: 50,
+            scale: 0.95,
+            transformOrigin: 'center center'
+        });
 
-        // Animate to final state
+        // Cards start with subtle 3D rotation
+        const cards = slide.querySelectorAll('.education-card');
+        gsap.set(cards, {
+            rotationY: 15,
+            y: 60,
+            scale: 0.9,
+            transformOrigin: 'center center'
+        });
+
+        gsap.set(slide.querySelector('footer'), {
+            y: 40,
+            transformOrigin: 'center center'
+        });
+
+        // Animate header with smooth scale and fade
         tl.to(slide.querySelector('.section-number'), {
+            y: 0,
             scale: 1,
             autoAlpha: 1,
-            duration: 0.6,
-            ease: 'back.out(2)'
+            duration: 0.8,
+            ease: 'power3.out'
         })
         .to(slide.querySelector('.section-title'), {
+            y: 0,
             scale: 1,
             autoAlpha: 1,
-            duration: 0.8,
-            ease: 'back.out(1.7)'
-        }, '-=0.3')
-        .to(slide.querySelectorAll('.education-card'), {
-            y: 0,
-            rotation: 0,
-            autoAlpha: 1,
-            duration: 0.8,
-            stagger: 0.15,
+            duration: 0.9,
             ease: 'power3.out'
-        }, '-=0.4')
+        }, '-=0.6')
+
+        // Cards appear with elegant cascade and subtle 3D
+        .to(cards, {
+            rotationY: 0,
+            y: 0,
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.9,
+            stagger: {
+                each: 0.15,
+                from: 'start',
+                ease: 'power2.out'
+            },
+            ease: 'power3.out'
+        }, '-=0.5')
+
+        // Footer slides up smoothly
         .to(slide.querySelector('footer'), {
             y: 0,
             autoAlpha: 1,
-            duration: 0.8
-        }, '-=0.2');
+            duration: 0.7,
+            ease: 'power3.out'
+        }, '-=0.4');
 
-        // Add hover animation for education cards
+        // Subtle professional hover with slight lift
         slide.querySelectorAll('.education-card').forEach(card => {
             card.addEventListener('mouseenter', () => {
                 gsap.to(card, {
-                    scale: 1.02,
-                    duration: 0.3,
+                    scale: 1.03,
+                    y: -5,
+                    rotationY: 2,
+                    duration: 0.4,
                     ease: 'power2.out'
                 });
             });
             card.addEventListener('mouseleave', () => {
                 gsap.to(card, {
                     scale: 1,
+                    y: 0,
+                    rotationY: 0,
+                    duration: 0.4,
+                    ease: 'power2.out'
+                });
+            });
+        });
+    }
+
+    // Contact page animations - Separate section
+    function animateContactPage() {
+        console.log('animateContactPage called');
+
+        // Check if animation already played
+        if (sessionStorage.getItem('animation_contact_played')) {
+            console.log('Animation already played, showing elements immediately');
+            // Animation already played, just show elements immediately
+            const elements = document.querySelectorAll('.contact-title, .contact-subtitle, .contact-link, .contact-location');
+            console.log('Found elements:', elements.length);
+            gsap.set(elements, {
+                autoAlpha: 1,
+                clearProps: 'transform'
+            });
+            return;
+        }
+
+        console.log('Starting fresh animation');
+
+        // Set initial positions
+        gsap.set('.contact-title', {
+            y: 50,
+            scale: 0.95,
+            autoAlpha: 0
+        });
+        gsap.set('.contact-subtitle', {
+            y: 30,
+            scale: 0.95,
+            autoAlpha: 0
+        });
+        gsap.set('.contact-link', {
+            y: 60,
+            scale: 0.9,
+            autoAlpha: 0
+        });
+        gsap.set('.contact-location', {
+            y: 40,
+            autoAlpha: 0
+        });
+
+        const tl = gsap.timeline({
+            defaults: { ease: 'power3.out' },
+            onComplete: () => {
+                sessionStorage.setItem('animation_contact_played', 'true');
+            }
+        });
+
+        tl.to('.contact-title', {
+            y: 0,
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.8
+        })
+        .to('.contact-subtitle', {
+            y: 0,
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.6
+        }, '-=0.5')
+        .to('.contact-link', {
+            y: 0,
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.8,
+            stagger: {
+                each: 0.12,
+                from: 'start',
+                ease: 'power2.out'
+            }
+        }, '-=0.3')
+        .to('.contact-location', {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.6
+        }, '-=0.4');
+
+        // Hover animations for contact links
+        document.querySelectorAll('.contact-link').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                gsap.to(link, {
+                    scale: 1.05,
+                    y: -8,
                     duration: 0.3,
                     ease: 'power2.out'
+                });
+                gsap.to(link.querySelector('.contact-icon'), {
+                    scale: 1.15,
+                    rotation: 5,
+                    duration: 0.3,
+                    ease: 'back.out(1.7)'
+                });
+            });
+            link.addEventListener('mouseleave', () => {
+                gsap.to(link, {
+                    scale: 1,
+                    y: 0,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+                gsap.to(link.querySelector('.contact-icon'), {
+                    scale: 1,
+                    rotation: 0,
+                    duration: 0.3,
+                    ease: 'back.out(1.7)'
+                });
+            });
+        });
+    }
+
+    // Expose globally
+    window.animateContactPage = animateContactPage;
+
+    // Contact slide animations - Professional & Elegant (deprecated - for old structure)
+    function animateContactSlide(tl, slide) {
+        // Set initial positions - fade and slide
+        gsap.set(slide.querySelector('.section-number'), {
+            y: 40,
+            scale: 0.95
+        });
+        gsap.set(slide.querySelector('.section-title'), {
+            y: 50,
+            scale: 0.95
+        });
+        gsap.set(slide.querySelector('.contact-subtitle'), {
+            y: 30,
+            scale: 0.95
+        });
+
+        // Contact links start hidden
+        const contactLinks = slide.querySelectorAll('.contact-link');
+        gsap.set(contactLinks, {
+            y: 60,
+            scale: 0.9
+        });
+
+        // Location starts hidden
+        gsap.set(slide.querySelector('.contact-location'), {
+            y: 40
+        });
+
+        // Animate header
+        tl.to(slide.querySelector('.section-number'), {
+            y: 0,
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.7,
+            ease: 'power3.out'
+        })
+        .to(slide.querySelector('.section-title'), {
+            y: 0,
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.8,
+            ease: 'power3.out'
+        }, '-=0.5')
+        .to(slide.querySelector('.contact-subtitle'), {
+            y: 0,
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.6,
+            ease: 'power3.out'
+        }, '-=0.5')
+
+        // Contact links appear with elegant cascade
+        .to(contactLinks, {
+            y: 0,
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.8,
+            stagger: {
+                each: 0.12,
+                from: 'start',
+                ease: 'power2.out'
+            },
+            ease: 'power3.out'
+        }, '-=0.3')
+
+        // Location appears last
+        .to(slide.querySelector('.contact-location'), {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.6,
+            ease: 'power3.out'
+        }, '-=0.4');
+
+        // Hover animations for contact links
+        slide.querySelectorAll('.contact-link').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                gsap.to(link, {
+                    scale: 1.05,
+                    y: -8,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+                gsap.to(link.querySelector('.contact-icon'), {
+                    scale: 1.15,
+                    rotation: 5,
+                    duration: 0.3,
+                    ease: 'back.out(1.7)'
+                });
+            });
+            link.addEventListener('mouseleave', () => {
+                gsap.to(link, {
+                    scale: 1,
+                    y: 0,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+                gsap.to(link.querySelector('.contact-icon'), {
+                    scale: 1,
+                    rotation: 0,
+                    duration: 0.3,
+                    ease: 'back.out(1.7)'
                 });
             });
         });

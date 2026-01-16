@@ -8,14 +8,17 @@
     // Elements
     const landingPage = document.getElementById('landingPage');
     const cvSection = document.getElementById('cv-scroll');
+    const contactSection = document.getElementById('contact-section');
     const slidesContainer = document.getElementById('slidesContainer');
     const slides = document.querySelectorAll('.slide');
     const scrollDownIndicator = document.querySelector('.scroll-down-indicator');
+    const scrollDownContactIndicator = document.querySelector('.scroll-down-contact-indicator');
     const scrollArrow = document.getElementById('scrollArrow');
 
     // Header navigation (select ALL links to hero, not just the first one)
     const heroLinks = document.querySelectorAll('a[href="#hero"]');
     const cvLink = document.querySelector('a[href="#cv-scroll"]');
+    const contactLink = document.querySelector('a[href="#contact-section"]');
 
     // Indicators
     const currentSlideIndicator = document.querySelector('.current-slide');
@@ -27,7 +30,7 @@
     const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
 
     // State
-    let currentSection = 'landing'; // 'landing' or 'cv'
+    let currentSection = 'landing'; // 'landing', 'cv', or 'contact'
     let currentSlide = 0;
     let isScrolling = false;
     let isMobileMenuOpen = false;
@@ -66,9 +69,21 @@
             });
         }
 
+        if (contactLink) {
+            contactLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                goToContactSection();
+            });
+        }
+
         // Scroll down indicator
         if (scrollDownIndicator) {
             scrollDownIndicator.addEventListener('click', goToCVSection);
+        }
+
+        // Scroll down to contact indicator
+        if (scrollDownContactIndicator) {
+            scrollDownContactIndicator.addEventListener('click', goToContactSection);
         }
 
         // Mobile menu
@@ -87,21 +102,33 @@
             }
         });
 
-        // Initial state - show landing page
+        // Initial state - show landing page only
         cvSection.style.display = 'none';
         cvSection.style.opacity = 0;
         document.getElementById('scene').style.display = 'none';
+
+        // Hide contact section initially
+        if (contactSection) {
+            contactSection.classList.remove('active');
+            contactSection.style.pointerEvents = 'none';
+        }
     }
 
     // Update header navigation active state
     function updateHeaderNav() {
-        if (heroLinks && cvLink) {
+        if (heroLinks && cvLink && contactLink) {
             if (currentSection === 'landing') {
                 heroLinks.forEach(link => link.classList.add('active'));
                 cvLink.classList.remove('active');
-            } else {
+                contactLink.classList.remove('active');
+            } else if (currentSection === 'cv') {
                 heroLinks.forEach(link => link.classList.remove('active'));
                 cvLink.classList.add('active');
+                contactLink.classList.remove('active');
+            } else if (currentSection === 'contact') {
+                heroLinks.forEach(link => link.classList.remove('active'));
+                cvLink.classList.remove('active');
+                contactLink.classList.add('active');
             }
         }
     }
@@ -110,6 +137,18 @@
     function updateSlideIndicator() {
         if (currentSlideIndicator) {
             currentSlideIndicator.textContent = String(currentSlide + 1).padStart(2, '0');
+        }
+    }
+
+    // Update scroll down to contact indicator visibility
+    function updateContactIndicator() {
+        if (scrollDownContactIndicator) {
+            // Show only when on last slide (Education) of CV section
+            if (currentSection === 'cv' && currentSlide === slides.length - 1) {
+                scrollDownContactIndicator.classList.add('visible');
+            } else {
+                scrollDownContactIndicator.classList.remove('visible');
+            }
         }
     }
 
@@ -129,7 +168,20 @@
         if (currentSection === 'landing' || isScrolling) return;
 
         isScrolling = true;
+        const previousSection = currentSection;
         currentSection = 'landing';
+
+        // Hide Contact section with animation
+        if (previousSection === 'contact') {
+            gsap.to(contactSection, {
+                opacity: 0,
+                duration: 0.6,
+                onComplete: () => {
+                    contactSection.classList.remove('active');
+                    contactSection.style.pointerEvents = 'none';
+                }
+            });
+        }
 
         // Hide CV canvas
         const cvCanvas = document.getElementById('scene');
@@ -206,7 +258,20 @@
         if (currentSection === 'cv' || isScrolling) return;
 
         isScrolling = true;
+        const previousSection = currentSection;
         currentSection = 'cv';
+
+        // Hide Contact section with animation
+        if (previousSection === 'contact') {
+            gsap.to(contactSection, {
+                opacity: 0,
+                duration: 0.6,
+                onComplete: () => {
+                    contactSection.classList.remove('active');
+                    contactSection.style.pointerEvents = 'none';
+                }
+            });
+        }
 
         // Hide warp canvas
         const warpCanvas = document.getElementById('warpScene');
@@ -256,10 +321,17 @@
             }
         });
 
-        // Reset to first slide
-        currentSlide = 0;
+        // Set slide position based on previous section
+        // If coming from Contact, go to last slide (Education), otherwise go to first slide
+        if (previousSection === 'contact') {
+            currentSlide = slides.length - 1; // Last slide (Education)
+        } else {
+            currentSlide = 0; // First slide
+        }
+
+        const translateX = -currentSlide * 100;
         slidesContainer.style.transition = 'none';
-        slidesContainer.style.transform = 'translateX(0vw)';
+        slidesContainer.style.transform = `translateX(${translateX}vw)`;
 
         setTimeout(() => {
             slidesContainer.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -296,6 +368,106 @@
         );
     }
 
+    // Go to Contact section
+    function goToContactSection() {
+        if (currentSection === 'contact' || isScrolling) return;
+
+        isScrolling = true;
+        const previousSection = currentSection;
+        currentSection = 'contact';
+
+        // Hide warp canvas (Landing)
+        const warpCanvas = document.getElementById('warpScene');
+        if (warpCanvas && previousSection === 'landing') {
+            gsap.to(warpCanvas, {
+                opacity: 0,
+                duration: 0.6,
+                onComplete: () => warpCanvas.style.display = 'none'
+            });
+        }
+
+        // Hide CV canvas with animation
+        const cvCanvas = document.getElementById('scene');
+        if (cvCanvas && previousSection === 'cv') {
+            gsap.to(cvCanvas, {
+                opacity: 0,
+                duration: 0.6,
+                onComplete: () => cvCanvas.style.display = 'none'
+            });
+        }
+
+        // Hide Landing page with animation
+        if (previousSection === 'landing') {
+            const landingContent = landingPage.querySelector('.warp-hero');
+            const scrollIndicator = landingPage.querySelector('.scroll-down-indicator');
+
+            gsap.to(landingContent, {
+                y: -50,
+                opacity: 0,
+                duration: 0.8
+            });
+
+            gsap.to(scrollIndicator, {
+                y: 50,
+                opacity: 0,
+                duration: 0.6
+            });
+
+            gsap.to(landingPage, {
+                opacity: 0,
+                duration: 0.8,
+                delay: 0.4,
+                onComplete: () => {
+                    landingPage.style.display = 'none';
+                    landingPage.style.pointerEvents = 'none';
+                }
+            });
+        }
+
+        // Hide CV section with animation
+        if (previousSection === 'cv') {
+            gsap.to(cvSection, {
+                y: -50,
+                opacity: 0,
+                duration: 0.8,
+                onComplete: () => {
+                    cvSection.style.display = 'none';
+                    cvSection.style.pointerEvents = 'none';
+                }
+            });
+        }
+
+        // Show contact section with animation
+        contactSection.classList.add('active');
+        contactSection.style.pointerEvents = 'auto';
+
+        gsap.fromTo(contactSection,
+            { opacity: 0, scale: 0.95 },
+            {
+                opacity: 1,
+                scale: 1,
+                duration: 0.8,
+                delay: 0.6,
+                onComplete: () => {
+                    isScrolling = false;
+                    updateHeaderNav();
+                    updateContactIndicator();
+
+                    // Initialize Three.js scene if not already done
+                    if (window.initContactScene && !window.contactSceneInitialized) {
+                        window.initContactScene();
+                        window.contactSceneInitialized = true;
+                    }
+
+                    // Trigger contact animation
+                    if (window.animateContactPage) {
+                        window.animateContactPage();
+                    }
+                }
+            }
+        );
+    }
+
     // Navigate to specific slide within CV
     function goToSlide(index) {
         if (currentSection !== 'cv') return;
@@ -309,6 +481,7 @@
 
         updateSlideIndicator();
         updateScrollArrow();
+        updateContactIndicator();
 
         // Update scene scroll progress
         if (window.updateSceneScroll) {
@@ -345,9 +518,21 @@
                 goToCVSection();
             }
         }
-        // If we're in CV section, handle horizontal scroll
+        // If we're in CV section, handle horizontal scroll and vertical to Contact
         else if (currentSection === 'cv') {
             e.preventDefault();
+
+            // If on last slide and scrolling down/right, go to Contact
+            if (currentSlide === slides.length - 1 && (deltaY > 0 || deltaX > 0)) {
+                goToContactSection();
+                return;
+            }
+
+            // If on first slide and scrolling up/left, go to Landing
+            if (currentSlide === 0 && (deltaY < 0 || deltaX < 0)) {
+                goToLanding();
+                return;
+            }
 
             const delta = Math.sign(deltaY || deltaX);
 
@@ -355,6 +540,15 @@
                 goToSlide(currentSlide + 1);
             } else if (delta < 0) {
                 goToSlide(currentSlide - 1);
+            }
+        }
+        // If we're in Contact section, handle vertical scroll up to go back to CV
+        else if (currentSection === 'contact') {
+            if (deltaY < 0) {
+                e.preventDefault();
+                // Go back to last slide of CV
+                currentSlide = slides.length - 1;
+                goToCVSection();
             }
         }
     }
